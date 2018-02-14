@@ -1,5 +1,4 @@
 ﻿using Cobinhood.API.Csharp.Client.Domain.Interfaces;
-using Cobinhood.API.Csharp.Client.Models.Market.TradingRules;
 
 namespace Cobinhood.API.Csharp.Client.Domain.Abstract
 {

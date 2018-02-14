@@ -1,5 +1,4 @@
-﻿using Cobinhood.API.Csharp.Client.Models.Market;
-using Cobinhood.API.Csharp.Client.Models.WebSocket;
+﻿using Cobinhood.API.Csharp.Client.Models.WebSocket;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;

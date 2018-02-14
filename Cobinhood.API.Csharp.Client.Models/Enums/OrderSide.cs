@@ -1,11 +1,15 @@
-﻿namespace Cobinhood.API.Csharp.Client.Models.Enums
+﻿using System.ComponentModel;
+
+namespace Cobinhood.API.Csharp.Client.Models.Enums
 {
     /// <summary>
     /// Different sides of an order.
     /// </summary>
     public enum OrderSide
     {
-        BUY,
-        SELL
+        [Description("bid")]
+        Bid,
+        [Description("ask")]
+        Ask
     }
 }

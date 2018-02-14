@@ -1,9 +1,9 @@
-﻿using Cobinhood.API.Csharp.Client.Models.Account;
+﻿using Cobinhood.API.Csharp.Client.Models.Chart;
 using Cobinhood.API.Csharp.Client.Models.Enums;
-using Cobinhood.API.Csharp.Client.Models.General;
 using Cobinhood.API.Csharp.Client.Models.Market;
-using Cobinhood.API.Csharp.Client.Models.UserStream;
-using Cobinhood.API.Csharp.Client.Models.WebSocket;
+using Cobinhood.API.Csharp.Client.Models.System;
+using Cobinhood.API.Csharp.Client.Models.Trading;
+using Cobinhood.API.Csharp.Client.Models.Wallet;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,233 +13,203 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
 {
     public interface ICobinhoodClient
     {
-        #region General
+        #region System
         /// <summary>
-        /// Test connectivity to the Rest API.
+        /// Get the reference system time as Unix timestamp.
         /// </summary>
         /// <returns></returns>
-        Task<dynamic> TestConnectivity();
+        Task<SystemTime> GetSystemTime();
 
         /// <summary>
-        /// Test connectivity to the Rest API and get the current server time.
+        /// Get system information.
         /// </summary>
         /// <returns></returns>
-        Task<ServerInfo> GetServerTime();
+        Task<SystemInformation> GetSystemInformation();
         #endregion
 
-        #region Market Data
+        #region Market
         /// <summary>
-        /// Get order book for a particular symbol.
+        /// Returns info for all currencies available for trade.
         /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="limit">Limit of records to retrieve.</param>
         /// <returns></returns>
-        Task<OrderBook> GetOrderBook(string symbol, int limit = 100);
+        Task<CurrenciesInfo> GetAllCurrencies();
 
         /// <summary>
-        /// Get compressed, aggregate trades. Trades that fill at the time, from the same order, with the same price will have the quantity aggregated.
+        /// Get info for all trading pairs.
         /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="limit">Limit of records to retrieve.</param>
         /// <returns></returns>
-        Task<IEnumerable<AggregateTrade>> GetAggregateTrades(string symbol, int limit = 500);
+        Task<TradingPairsInfo> GetTradingPairs();
 
         /// <summary>
-        /// Kline/candlestick bars for a symbol. Klines are uniquely identified by their open time.
+        /// Get order book for the trading pair containing all asks/bids.
         /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="interval">Time interval to retreive.</param>
-        /// <param name="limit">Limit of records to retrieve.</param>
+        /// <param name="quoteSymbol">Quote symbol to look for.</param>
+        /// <param name="baseSymbol">Base symbol to look for.</param>
         /// <returns></returns>
-        Task<IEnumerable<Candlestick>> GetCandleSticks(string symbol, TimeInterval interval, DateTime? startTime = null, DateTime? endTime = null, int limit = 500);
+        Task<OrderBookInfo> GetOrderBook(string quoteSymbol, string baseSymbol);
 
         /// <summary>
-        /// 24 hour price change statistics.
+        /// Returns ticker for specified trading pair.
         /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
+        /// <param name="quoteSymbol">Quote symbol to look for.</param>
+        /// <param name="baseSymbol">Base symbol to look for.</param>
         /// <returns></returns>
-        Task<IEnumerable<PriceChangeInfo>> GetPriceChange24H(string symbol);
+        Task<TickerInfo> GetTicker(string quoteSymbol, string baseSymbol);
 
         /// <summary>
-        /// Latest price for all symbols.
+        /// Returns most recent trades for the specified trading pair.
         /// </summary>
+        /// <param name="quoteSymbol">Quote symbol to look for.</param>
+        /// <param name="baseSymbol">Base symbol to look for.</param>
         /// <returns></returns>
-        Task<IEnumerable<SymbolPrice>> GetAllPrices();
-
-        /// <summary>
-        /// Best price/qty on the order book for all symbols.
-        /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<OrderBookTicker>> GetOrderBookTicker();
+        Task<RecentTradesInfo> GetRecentTrades(string quoteSymbol, string baseSymbol);
         #endregion
 
-        #region Account Information
+        #region Charts
         /// <summary>
-        /// Send in a new order.
+        /// Get charting candles.
         /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="quantity">Quantity to transaction.</param>
-        /// <param name="price">Price of the transaction.</param>
-        /// <param name="orderType">Order type (LIMIT-MARKET).</param>
-        /// <param name="side">Order side (BUY-SELL).</param>
-        /// <param name="timeInForce">Indicates how long an order will remain active before it is executed or expires.</param>
-        /// <param name="recvWindow">Specific number of milliseconds the request is valid for.</param>
+        /// <param name="quoteSymbol">Quote symbol to look for.</param>
+        /// <param name="baseSymbol">Base symbol to look for.</param>
         /// <returns></returns>
-        Task<NewOrder> PostNewOrder(string symbol, decimal quantity, decimal price, OrderSide side, OrderType orderType = OrderType.LIMIT, TimeInForce timeInForce = TimeInForce.GTC, decimal icebergQty = 0m, long recvWindow = 6000000);
-
-        /// <summary>
-        /// Test new order creation and signature/recvWindow long. Creates and validates a new order but does not send it into the matching engine.
-        /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="quantity">Quantity to transaction.</param>
-        /// <param name="price">Price of the transaction.</param>
-        /// <param name="orderType">Order type (LIMIT-MARKET).</param>
-        /// <param name="side">Order side (BUY-SELL).</param>
-        /// <param name="timeInForce">Indicates how long an order will remain active before it is executed or expires.</param>
-        /// <param name="recvWindow">Specific number of milliseconds the request is valid for.</param>
-        /// <returns></returns>
-        Task<dynamic> PostNewOrderTest(string symbol, decimal quantity, decimal price, OrderSide side, OrderType orderType = OrderType.LIMIT, TimeInForce timeInForce = TimeInForce.GTC, decimal icebergQty = 0m, long recvWindow = 6000000);
-
-        /// <summary>
-        /// Check an order's status.
-        /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="orderId">Id of the order to retrieve.</param>
-        /// <param name="origClientOrderId">origClientOrderId of the order to retrieve.</param>
-        /// <param name="recvWindow">Specific number of milliseconds the request is valid for.</param>
-        /// <returns></returns>
-        Task<Order> GetOrder(string symbol, long? orderId = null, string origClientOrderId = null, long recvWindow = 6000000);
-
-        /// <summary>
-        /// Cancel an active order.
-        /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="orderId">Id of the order to cancel.</param>
-        /// <param name="origClientOrderId">origClientOrderId of the order to cancel.</param>
-        /// <param name="recvWindow">Specific number of milliseconds the request is valid for.</param>
-        /// <returns></returns>
-        Task<CanceledOrder> CancelOrder(string symbol, long? orderId = null, string origClientOrderId = null, long recvWindow = 6000000);
-
-        /// <summary>
-        /// Get all open orders on a symbol.
-        /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="recvWindow">Specific number of milliseconds the request is valid for.</param>
-        /// <returns></returns>
-        Task<IEnumerable<Order>> GetCurrentOpenOrders(string symbol, long recvWindow = 6000000);
-
-        /// <summary>
-        /// Get all account orders; active, canceled, or filled.
-        /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="orderId">If is set, it will get orders >= that orderId. Otherwise most recent orders are returned.</param>
-        /// <param name="limit">Limit of records to retrieve.</param>
-        /// <param name="recvWindow">Specific number of milliseconds the request is valid for.</param>
-        /// <returns></returns>
-        Task<IEnumerable<Order>> GetAllOrders(string symbol, long? orderId = null, int limit = 500, long recvWindow = 6000000);
-
-        /// <summary>
-        /// Get current account information.
-        /// </summary>
-        /// <param name="recvWindow">Specific number of milliseconds the request is valid for.</param>
-        /// <returns></returns>
-        Task<AccountInfo> GetAccountInfo(long recvWindow = 6000000);
-
-        /// <summary>
-        /// Get trades for a specific account and symbol.
-        /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="recvWindow">Specific number of milliseconds the request is valid for.</param>
-        /// <returns></returns>
-        Task<IEnumerable<Trade>> GetTradeList(string symbol, long recvWindow = 6000000);
-
-        /// <summary>
-        /// Submit a withdraw request.
-        /// </summary>
-        /// <param name="asset">Asset to withdraw.</param>
-        /// <param name="amount">Amount to withdraw.</param>
-        /// <param name="address">Address where the asset will be deposited.</param>
-        /// <param name="addressName">Address name.</param>
-        /// <param name="recvWindow">Specific number of milliseconds the request is valid for.</param>
-        /// <returns></returns>
-        Task<WithdrawResponse> Withdraw(string asset, decimal amount, string address, string addressName = "", long recvWindow = 6000000);
-
-        /// <summary>
-        /// Fetch deposit history.
-        /// </summary>
-        /// <param name="asset">Asset you want to see the information for.</param>
-        /// <param name="status">Deposit status.</param>
-        /// <param name="startTime">Start time. </param>
-        /// <param name="endTime">End time.</param>
-        /// <param name="recvWindow">Specific number of milliseconds the request is valid for.</param>
-        /// <returns></returns>
-        Task<DepositHistory> GetDepositHistory(string asset, DepositStatus? status = null, DateTime? startTime = null, DateTime? endTime = null, long recvWindow = 6000000);
-
-        /// <summary>
-        /// Fetch withdraw history.
-        /// </summary>
-        /// <param name="asset">Asset you want to see the information for.</param>
-        /// <param name="status">Withdraw status.</param>
-        /// <param name="startTime">Start time. </param>
-        /// <param name="endTime">End time.</param>
-        /// <param name="recvWindow">Specific number of milliseconds the request is valid for.</param>
-        /// <returns></returns>
-        Task<WithdrawHistory> GetWithdrawHistory(string asset, WithdrawStatus? status = null, DateTime? startTime = null, DateTime? endTime = null, long recvWindow = 6000000);
+        Task<CandlesInfo> GetCandles(string quoteSymbol, string baseSymbol);
         #endregion
 
-        #region User Stream 
+        #region Trading
         /// <summary>
-        /// Start a new user data stream.
+        /// Get information for a single order.
         /// </summary>
+        /// <param name="orderId"></param>
         /// <returns></returns>
-        Task<UserStreamInfo> StartUserStream();
+        Task<OrderInfo> GetOrder(string orderId);
 
         /// <summary>
-        /// PING a user data stream to prevent a time out.
+        /// Get all trades originating from the specific order.
         /// </summary>
-        /// <param name="listenKey">Listenkey of the user stream to keep alive.</param>
+        /// <param name="orderId"></param>
         /// <returns></returns>
-        Task<dynamic> KeepAliveUserStream(string listenKey);
+        Task<OrderTradesInfo> GetOrderTrades(string orderId);
 
         /// <summary>
-        /// Close out a user data stream.
+        /// List all current orders for user.
         /// </summary>
-        /// <param name="listenKey">Listenkey of the user stream to close.</param>
+        /// <param name="quoteSymbol">Quote symbol to look for.</param>
+        /// <param name="baseSymbol">Base symbol to look for.</param>
+        /// <param name="limit">Limits number of orders per page.</param>
         /// <returns></returns>
-        Task<dynamic> CloseUserStream(string listenKey);
+        Task<AllOrdersInfo> GetAllOrders(string quoteSymbol = "", string baseSymbol = "", int? limit = null);
+
+        /// <summary>
+        /// Place orders to ask or bid.
+        /// </summary>
+        /// <param name="quoteSymbol">Quote symbol to look for.</param>
+        /// <param name="baseSymbol">Base symbol to look for.</param>
+        /// <param name="orderSide">Order side.</param>
+        /// <param name="orderType">Order type.</param>
+        /// <param name="price">Quote price.</param>
+        /// <param name="size">Base amount.</param>
+        /// <returns></returns>
+        Task<PlacedOrderInfo> PlaceOrder(string quoteSymbol, string baseSymbol, OrderSide orderSide, OrderType orderType, string price, string size);
+
+        /// <summary>
+        /// Modify a single order.
+        /// </summary>
+        /// <param name="orderId">Order id.</param>
+        /// <param name="price">Quote price.</param>
+        /// <param name="size">Base amount.</param>
+        /// <returns></returns>
+        Task<Result> ModifyOrder(string orderId, string price, string size);
+
+        /// <summary>
+        /// Cancel a single order.
+        /// </summary>
+        /// <param name="orderId">Order id.</param>
+        /// <returns></returns>
+        Task<Result> CancelOrder(string orderId);
+
+        /// <summary>
+        /// Returns order history for the current user.
+        /// </summary>
+        /// <param name="quoteSymbol">Quote symbol to look for.</param>
+        /// <param name="baseSymbol">Base symbol to look for.</param>
+        /// <param name="limit">Limits number of orders per page.</param>
+        /// <returns></returns>
+        Task<OrderHistoryInfo> GetOrderHistory(string quoteSymbol = "", string baseSymbol = "", int? limit = null);
+
+        /// <summary>
+        /// Get trade information. A user only can get their own trade.
+        /// </summary>
+        /// <param name="tradeId">Trade id.</param>
+        /// <returns></returns>
+        Task<TradeInfo> GetTrade(string tradeId);
+
+        /// <summary>
+        /// Returns trade history for the current user.
+        /// </summary>
+        /// <param name="quoteSymbol">Quote symbol to look for.</param>
+        /// <param name="baseSymbol">Base symbol to look for.</param>
+        /// <param name="limit">Limits number of orders per page.</param>
+        /// <returns></returns>
+        Task<TradeHistoryInfo> GetTradeHistory(string quoteSymbol = "", string baseSymbol = "", int? limit = null);
         #endregion
 
-        #region WebSocket
+        #region Wallet
         /// <summary>
-        /// Listen to the Depth endpoint.
+        /// Get balances of the current user.
         /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="depthHandler">Handler to be used when a message is received.</param>
-        void ListenDepthEndpoint(string symbol, MessageHandler<DepthMessage> messageHandler);
-
-        /// <summary>
-        /// Listen to the Kline endpoint.
-        /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="interval">Time interval to retreive.</param>
-        /// <param name="klineHandler">Handler to be used when a message is received.</param>
-        void ListenKlineEndpoint(string symbol, TimeInterval interval, MessageHandler<KlineMessage> messageHandler);
-
-        /// <summary>
-        /// Listen to the Trades endpoint.
-        /// </summary>
-        /// <param name="symbol">Ticker symbol.</param>
-        /// <param name="tradeHandler">Handler to be used when a message is received.</param>
-        void ListenTradeEndpoint(string symbol, MessageHandler<AggregateTradeMessage> messageHandler);
-
-        /// <summary>
-        /// Listen to the User Data endpoint.
-        /// </summary>
-        /// <param name="accountInfoHandler">Handler to be used when a account message is received.</param>
-        /// <param name="tradesHandler">Handler to be used when a trade message is received.</param>
-        /// <param name="ordersHandler">Handler to be used when a order message is received.</param>
         /// <returns></returns>
-        string ListenUserDataEndpoint(MessageHandler<AccountUpdatedMessage> accountInfoHandler, MessageHandler<OrderOrTradeUpdatedMessage> tradesHandler, MessageHandler<OrderOrTradeUpdatedMessage> ordersHandler);
+        Task<WalletBalancesInfo> GetWalletBalances();
+
+        /// <summary>
+        /// Get balance history for the current user.
+        /// </summary>
+        /// <param name="currency">Currency to look for.</param>
+        /// <param name="limit">Limits number of orders per page.</param>
+        /// <returns></returns>
+        Task<LedgerEntriesInfo> GetLedgerEntries(string currency = "", int? limit = null);
+
+        /// <summary>
+        /// Get Wallet Deposit Addresses.
+        /// </summary>
+        /// <param name="currency">Currency to look for.</param>
+        /// <returns></returns>
+        Task<DepositAddressesInfo> GetDepositAddresses(string currency = "");
+
+        /// <summary>
+        /// Get Wallet Withdrawal Addresses.
+        /// </summary>
+        /// <param name="currency">Currency to look for.</param>
+        /// <returns></returns>
+        Task<WithdrawalAddressesInfo> GetWithdrawalAddresses(string currency = "");
+
+        /// <summary>
+        /// Get Withdrawal Information.
+        /// </summary>
+        /// <param name="withdrawalId">Withdrawal id.</param>
+        /// <returns></returns>
+        Task<WithdrawalInfo> GetWithdrawal(string withdrawalId = "");
+
+        /// <summary>
+        /// Get All Withdrawals.
+        /// </summary>
+        /// <param name="withdrawalStatus">Status of withdrawal.</param>
+        /// <param name="currency">Currency to look for.</param>
+        /// <param name="limit">Limits number of orders per page.</param>
+        /// <returns></returns>
+        Task<AllWithdrawalInfo> GetAllWithdrawals(WithdrawalStatus withdrawalStatus, string currency = "", int? limit = null);
+
+        /// <summary>
+        /// Get Deposit Information.
+        /// </summary>
+        /// <param name="depositId">Deposit id.</param>
+        /// <returns></returns>
+        Task<DepositInfo> GetDeposit(string depositId = "");
+
+        /// <summary>
+        /// Get All Deposits.
+        /// </summary>
+        /// <returns></returns>
+        Task<AllDepositsInfo> GetAllDeposits();
         #endregion
     }
 }

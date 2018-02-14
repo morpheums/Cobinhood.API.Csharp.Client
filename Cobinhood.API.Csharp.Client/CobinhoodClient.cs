@@ -1,11 +1,7 @@
 ﻿using Cobinhood.API.Csharp.Client.Domain.Abstract;
 using Cobinhood.API.Csharp.Client.Domain.Interfaces;
-using Cobinhood.API.Csharp.Client.Models.Account;
 using Cobinhood.API.Csharp.Client.Models.Enums;
-using Cobinhood.API.Csharp.Client.Models.General;
 using Cobinhood.API.Csharp.Client.Models.Market;
-using Cobinhood.API.Csharp.Client.Models.Market.TradingRules;
-using Cobinhood.API.Csharp.Client.Models.UserStream;
 using Cobinhood.API.Csharp.Client.Models.WebSocket;
 using Cobinhood.API.Csharp.Client.Utils;
 using System;
