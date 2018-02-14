@@ -5,40 +5,44 @@
     /// </summary>
     public static class EndPoints
     {
-        #region General Endpoints
-        public static readonly string TestConnectivity = "/api/v1/ping";
-        public static readonly string CheckServerTime = "/api/v1/time";
+        #region System Endpoints
+        public static readonly string GetSystemTime = "/v1/system/time";
+        public static readonly string GetSystemInformation = "/v1/system/info";
         #endregion
 
-        #region Market Data Endpoints
-        public static readonly string OrderBook = "/api/v1/depth";
-        public static readonly string AggregateTrades = "/api/v1/aggTrades";
-        public static readonly string Candlesticks = "/api/v1/klines";
-        public static readonly string TickerPriceChange24H = "/api/v1/ticker/24hr";
-        public static readonly string AllPrices = "/api/v1/ticker/allPrices";
-        public static readonly string OrderBookTicker = "/api/v1/ticker/allBookTickers";
-        public static readonly string TradingRules = "https://gist.githubusercontent.com/Ninj0r/3029b9d635f8f81f5ffab9cc9df5cc61/raw/810530a2118e5d8cdcfcc4d220349976a0acf131/tradingRules_20171022.json";
+        #region Market Endpoints
+        public static readonly string GetAllCurrencies = "/v1/market/currencies";
+        public static readonly string GetAllTradingPairs = "/v1/market/trading_pairs";
+        public static readonly string GetOrderBook = "/v1/market/orderbooks/<trading_pair_id>";
+        public static readonly string GetTicker = "/v1/market/tickers/<trading_pair_id>";
+        public static readonly string GetRecentTrades = "/v1/market/trades/<trading_pair_id>";
         #endregion
 
-        #region Account Endpoints
-        public static readonly string NewOrder = "/api/v3/order";
-        public static readonly string NewOrderTest = "/api/v3/order/test";
-        public static readonly string QueryOrder = "/api/v3/order";
-        public static readonly string CancelOrder = "/api/v3/order";
-        public static readonly string CurrentOpenOrders = "/api/v3/openOrders";
-        public static readonly string AllOrders = "/api/v3/allOrders";
-        public static readonly string AccountInformation = "/api/v3/account";
-        public static readonly string TradeList = "/api/v3/myTrades";
-
-        public static readonly string Withdraw = "/wapi/v1/withdraw.html";
-        public static readonly string DepositHistory = "/wapi/v1/getDepositHistory.html";
-        public static readonly string WithdrawHistory = "/wapi/v1/getWithdrawHistory.html";
+        #region Chart Endpoints
+        public static readonly string GetCandles = "/v1/chart/candles/";
         #endregion
 
-        #region User Stream Endpoints
-        public static readonly string StartUserStream = "/api/v1/userDataStream";
-        public static readonly string KeepAliveUserStream = "/api/v1/userDataStream";
-        public static readonly string CloseUserStream = "/api/v1/userDataStream";
+        #region Trading Endpoints
+        public static readonly string GetOrder = "/v1/trading/orders/<order_id>";
+        public static readonly string GetOrderTrades = "/v1/trading/orders/<order_id>/trades";
+        public static readonly string GetAllOrders = "/v1/trading/orders";
+        public static readonly string PlaceOrder = "/v1/trading/orders";
+        public static readonly string ModifyOrder = "/v1/trading/orders/<order_id>";
+        public static readonly string CancelOrder = "/v1/trading/orders/<order_id>";
+        public static readonly string GetOrderHistory = "/v1/trading/order_history";
+        public static readonly string GetTrade = "/v1/trading/trades/<trade_id>";
+        public static readonly string GetTradeHistory = "/v1/trading/trades";
+        #endregion
+
+        #region Wallet Endpoints
+        public static readonly string GetWalletBalances = "/v1/wallet/balances";
+        public static readonly string GetLedgerEntries = "/v1/wallet/ledger";
+        public static readonly string GetDepositAddresses = "/v1/wallet/deposit_addresses";
+        public static readonly string GetWithdrawalAddresses = "/v1/wallet/withdrawal_addresses";
+        public static readonly string GetWithdrawal = "/v1/wallet/withdrawals/<withdrawal_id>";
+        public static readonly string GetAllWithdrawals = "/v1/wallet/withdrawals";
+        public static readonly string GetDeposit = "/v1/wallet/deposits/<deposit_id>";
+        public static readonly string GetAllDeposits = "/v1/wallet/deposits";
         #endregion
     }
 }
