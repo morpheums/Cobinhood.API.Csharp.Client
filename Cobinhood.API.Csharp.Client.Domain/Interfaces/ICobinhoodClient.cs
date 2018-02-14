@@ -96,8 +96,9 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// <param name="quoteSymbol">Quote symbol to look for.</param>
         /// <param name="baseSymbol">Base symbol to look for.</param>
         /// <param name="limit">Limits number of orders per page.</param>
+        /// <param name="page">Page number to retrieve.</param>
         /// <returns></returns>
-        Task<AllOrdersInfo> GetAllOrders(string quoteSymbol = "", string baseSymbol = "", int? limit = null);
+        Task<AllOrdersInfo> GetAllOrders(string quoteSymbol = "", string baseSymbol = "", int? limit = null, int? page = null);
 
         /// <summary>
         /// Place orders to ask or bid.
@@ -133,8 +134,9 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// <param name="quoteSymbol">Quote symbol to look for.</param>
         /// <param name="baseSymbol">Base symbol to look for.</param>
         /// <param name="limit">Limits number of orders per page.</param>
+        /// <param name="page">Page number to retrieve.</param>
         /// <returns></returns>
-        Task<OrderHistoryInfo> GetOrderHistory(string quoteSymbol = "", string baseSymbol = "", int? limit = null);
+        Task<OrderHistoryInfo> GetOrderHistory(string quoteSymbol = "", string baseSymbol = "", int? limit = null, int? page = null);
 
         /// <summary>
         /// Get trade information. A user only can get their own trade.
@@ -149,8 +151,9 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// <param name="quoteSymbol">Quote symbol to look for.</param>
         /// <param name="baseSymbol">Base symbol to look for.</param>
         /// <param name="limit">Limits number of orders per page.</param>
+        /// <param name="page">Page number to retrieve.</param>
         /// <returns></returns>
-        Task<TradeHistoryInfo> GetTradeHistory(string quoteSymbol = "", string baseSymbol = "", int? limit = null);
+        Task<TradeHistoryInfo> GetTradeHistory(string quoteSymbol = "", string baseSymbol = "", int? limit = null, int? page = null);
         #endregion
 
         #region Wallet
@@ -165,8 +168,9 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// </summary>
         /// <param name="currency">Currency to look for.</param>
         /// <param name="limit">Limits number of orders per page.</param>
+        /// <param name="page">Page number to retrieve.</param>
         /// <returns></returns>
-        Task<LedgerEntriesInfo> GetLedgerEntries(string currency = "", int? limit = null);
+        Task<LedgerEntriesInfo> GetLedgerEntries(string currency = "", int? limit = null, int? page = null);
 
         /// <summary>
         /// Get Wallet Deposit Addresses.
@@ -195,8 +199,9 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// <param name="withdrawalStatus">Status of withdrawal.</param>
         /// <param name="currency">Currency to look for.</param>
         /// <param name="limit">Limits number of orders per page.</param>
+        /// <param name="page">Page number to retrieve.</param>
         /// <returns></returns>
-        Task<AllWithdrawalInfo> GetAllWithdrawals(WithdrawalStatus withdrawalStatus, string currency = "", int? limit = null);
+        Task<AllWithdrawalInfo> GetAllWithdrawals(WithdrawalStatus withdrawalStatus, string currency = "", int? limit = null, int? page = null);
 
         /// <summary>
         /// Get Deposit Information.
