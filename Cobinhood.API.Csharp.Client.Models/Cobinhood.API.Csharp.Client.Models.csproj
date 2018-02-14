@@ -48,7 +48,8 @@
     <Compile Include="Enums\ApiMethods.cs" />
     <Compile Include="Enums\OrderSide.cs" />
     <Compile Include="Enums\OrderType.cs" />
-    <Compile Include="Enums\WithdrawalStatuses.cs" />
+    <Compile Include="Enums\Timeframe.cs" />
+    <Compile Include="Enums\WithdrawalStatus.cs" />
     <Compile Include="Market\CurrenciesInfo.cs" />
     <Compile Include="Market\OrderBookInfo.cs" />
     <Compile Include="Market\RecentTradesInfo.cs" />

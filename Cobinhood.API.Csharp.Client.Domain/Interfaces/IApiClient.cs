@@ -1,7 +1,5 @@
 ﻿using Cobinhood.API.Csharp.Client.Models.Enums;
-using Cobinhood.API.Csharp.Client.Models.WebSocket;
 using System.Threading.Tasks;
-using static Cobinhood.API.Csharp.Client.Domain.Abstract.ApiClientAbstract;
 
 namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
 {
@@ -16,6 +14,6 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// <param name="isSigned">Specifies if the request needs a signature.</param>
         /// <param name="parameters">Request parameters.</param>
         /// <returns></returns>
-        Task<T> CallAsync<T>(ApiMethod method, string endpoint, bool isSigned = false, string parameters = null);
+        Task<T> CallAsync<T>(ApiMethod method, string endpoint, string parameters = null);
     }
 }

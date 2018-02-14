@@ -30,16 +30,6 @@ namespace Cobinhood.API.Csharp.Client.Utils
         }
 
         /// <summary>
-        /// Gets a timestamp in milliseconds.
-        /// </summary>
-        /// <returns>Timestamp in milliseconds.</returns>
-        public static string GenerateTimeStamp(DateTime baseDateTime)
-        {
-            var dtOffset = new DateTimeOffset(baseDateTime);
-            return dtOffset.ToUnixTimeMilliseconds().ToString();
-        }
-
-        /// <summary>
         /// Gets an HttpMethod object based on a string.
         /// </summary>
         /// <param name="method">Name of the HttpMethod to create.</param>

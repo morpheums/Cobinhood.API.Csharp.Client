@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using WebSocketSharp;
 
 namespace Cobinhood.API.Csharp.Client.Domain.Abstract
 {
@@ -18,11 +16,6 @@ namespace Cobinhood.API.Csharp.Client.Domain.Abstract
         public readonly string _apiKey = "";
 
         /// <summary>
-        /// API secret used to signed API calls.
-        /// </summary>
-        public readonly string _apiSecret = "";
-
-        /// <summary>
         /// HttpClient to be used to call the API.
         /// </summary>
         public readonly HttpClient _httpClient;
@@ -31,11 +24,6 @@ namespace Cobinhood.API.Csharp.Client.Domain.Abstract
         /// URL of the WebSocket Endpoint
         /// </summary>
         public readonly string _webSocketEndpoint = "";
-
-        /// <summary>
-        /// Used to store all the opened web sockets.
-        /// </summary>
-        public List<WebSocket> _openSockets;
 
         /// <summary>
         /// Delegate for the messages returned by the websockets.
@@ -47,16 +35,15 @@ namespace Cobinhood.API.Csharp.Client.Domain.Abstract
         /// <summary>
         /// Defines the constructor of the Api Client.
         /// </summary>
+        /// <param name="apiUrl">API base url.</param>
+        /// <param name="webSocketEndpoint">Websocket url.</param>
         /// <param name="apiKey">Key used to authenticate within the API.</param>
-        /// <param name="apiSecret">API secret used to signed API calls.</param>
-        /// <param name="apiUrl">API based url.</param>
-        public ApiClientAbstract(string apiKey, string apiSecret, string apiUrl = @"https://www.binance.com", string webSocketEndpoint = @"wss://stream.binance.com:9443/ws/", bool addDefaultHeaders = true)
+        /// <param name="addDefaultHeaders">Specifies if default headers must be added.</param>
+        public ApiClientAbstract(string apiKey, string apiUrl, string webSocketEndpoint, bool addDefaultHeaders = true)
         {
             _apiUrl = apiUrl;
             _apiKey = apiKey;
-            _apiSecret = apiSecret;
             _webSocketEndpoint = webSocketEndpoint;
-            _openSockets = new List<WebSocket>();
             _httpClient = new HttpClient
             {
                 BaseAddress = new Uri(_apiUrl)
@@ -73,8 +60,11 @@ namespace Cobinhood.API.Csharp.Client.Domain.Abstract
         /// </summary>
         private void ConfigureHttpClient()
         {
-            _httpClient.DefaultRequestHeaders
-                 .Add("X-MBX-APIKEY", _apiKey);
+            if (!string.IsNullOrEmpty(_apiKey))
+            {
+                _httpClient.DefaultRequestHeaders
+                     .Add("authorization", _apiKey);
+            }
 
             _httpClient.DefaultRequestHeaders
                     .Accept

@@ -5,9 +5,7 @@ using Cobinhood.API.Csharp.Client.Models.System;
 using Cobinhood.API.Csharp.Client.Models.Trading;
 using Cobinhood.API.Csharp.Client.Models.Wallet;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Cobinhood.API.Csharp.Client.Domain.Abstract.ApiClientAbstract;
 
 namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
 {
@@ -38,7 +36,7 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// Get info for all trading pairs.
         /// </summary>
         /// <returns></returns>
-        Task<TradingPairsInfo> GetTradingPairs();
+        Task<TradingPairsInfo> GetAllTradingPairs();
 
         /// <summary>
         /// Get order book for the trading pair containing all asks/bids.
@@ -72,7 +70,7 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// <param name="quoteSymbol">Quote symbol to look for.</param>
         /// <param name="baseSymbol">Base symbol to look for.</param>
         /// <returns></returns>
-        Task<CandlesInfo> GetCandles(string quoteSymbol, string baseSymbol);
+        Task<CandlesInfo> GetCandles(string quoteSymbol, string baseSymbol, Timeframe timeframe, DateTime? startTime = null, DateTime? endTime = null);
         #endregion
 
         #region Trading
@@ -153,7 +151,7 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// <param name="limit">Limits number of orders per page.</param>
         /// <param name="page">Page number to retrieve.</param>
         /// <returns></returns>
-        Task<TradeHistoryInfo> GetTradeHistory(string quoteSymbol = "", string baseSymbol = "", int? limit = null, int? page = null);
+        Task<TradeHistoryInfo> GetTradeHistory(string quoteSymbol, string baseSymbol, int? limit = null, int? page = null);
         #endregion
 
         #region Wallet
