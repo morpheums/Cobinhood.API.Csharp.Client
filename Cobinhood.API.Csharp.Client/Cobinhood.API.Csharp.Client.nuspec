@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Binance.API.Csharp.Client</id>
+    <version>1.4.0</version>
+    <title>Binance.API.Csharp.Client</title>
+    <authors>Jose Mejia</authors>
+    <owners>Jose Mejia</owners>
+    <projectUrl>https://github.com/morpheums/Binance.API.Csharp.Helper</projectUrl>
+    <iconUrl>https://github.com/morpheums/Binance.API.Csharp.Client/blob/master/Binance.API.Csharp.Client/BinanceLogo.png?raw=true</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>C#.NET client for Binance Exchange API.</description>
+    <releaseNotes>Fixing issue calling GetPriceChange24H method for a single ticker. Methods now return original error code and messages.
+    </releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>Criptocurrency Binance API dotnet csharp wrapper</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="10.0.3" />
+      <dependency id="WebSocketSharp-NonPreRelease" version="1.0.0" />
+    </dependencies>
+  </metadata>
+</package>
