@@ -4,6 +4,7 @@ namespace Cobinhood.API.Csharp.Client.Models.Enums
 {
     public enum WithdrawalStatus
     {
+        All,
         [Description("tx_pending_two_factor_auth")]
         PendingTwoFactorAuth,
         [Description("tx_pending_email_auth")]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Cobinhood.API.Csharp.Client.Domain.Abstract
 {

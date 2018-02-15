@@ -13,24 +13,32 @@ namespace Cobinhood.API.Csharp.Client
 {
     public class ApiClient : ApiClientAbstract, IApiClient
     {
-        /// <see cref="ApiClientAbstract(string, string, string, bool)"/>
+        /// <see cref="ApiClientAbstract(string, string, string, string, bool)"/>
         public ApiClient(string apiKey, string apiUrl = @"https://api.cobinhood.com", string webSocketEndpoint = @"wss://feed.cobinhood.com/ws", bool addDefaultHeaders = true) : base(apiKey, apiUrl, webSocketEndpoint, addDefaultHeaders)
         {
         }
 
         /// <see cref="IApiClient.CallAsync{T}(ApiMethod, string, bool, string)"/>
-        public async Task<T> CallAsync<T>(ApiMethod method, string endpoint, string parameters = null)
+        public async Task<T> CallAsync<T>(ApiMethod method, string endpoint, string parameters = null, object data = null)
         {
             var finalEndpoint = endpoint + (string.IsNullOrWhiteSpace(parameters) ? "" : $"?{parameters}");
 
-            _httpClient.DefaultRequestHeaders.Add("nonce", DateTime.Now.GetUnixTimeStamp());
+            if (method != ApiMethod.GET)
+            {
+                _httpClient.DefaultRequestHeaders.Remove("nonce");
+                _httpClient.DefaultRequestHeaders.Add("nonce", DateTime.Now.GetUnixTimeStamp());
+            }
 
             var request = new HttpRequestMessage(Utilities.CreateHttpMethod(method.ToString()), finalEndpoint);
-            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
-            if (response.IsSuccessStatusCode)
+
+            if (data != null)
             {
-                // Api return is OK
-                response.EnsureSuccessStatusCode();
+                request.Content = new StringContent(JsonConvert.SerializeObject(data));
+            }
+
+            try
+            {
+                var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
 
                 // Get the result
                 var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -38,32 +46,10 @@ namespace Cobinhood.API.Csharp.Client
                 // Serialize and return result
                 return JsonConvert.DeserializeObject<T>(result);
             }
-
-            // We received an error
-            if (response.StatusCode == HttpStatusCode.GatewayTimeout)
+            catch (Exception ex)
             {
-                throw new Exception("Api Request Timeout.");
+                throw ex;
             }
-
-            // Get te error code and message
-            var e = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            // Error Values
-            var eCode = 0;
-            string eMsg = "";
-            if (e.IsValidJson())
-            {
-                try
-                {
-                    var i = JObject.Parse(e);
-
-                    eCode = i["code"]?.Value<int>() ?? 0;
-                    eMsg = i["msg"]?.Value<string>();
-                }
-                catch { }
-            }
-
-            throw new Exception(string.Format("Api Error Code: {0} Message: {1}", eCode, eMsg));
         }
     }
 }

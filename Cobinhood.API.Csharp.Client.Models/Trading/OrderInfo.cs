@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Cobinhood.API.Csharp.Client.Models.General;
+using Newtonsoft.Json;
 
 namespace Cobinhood.API.Csharp.Client.Models.Trading
 {
@@ -8,6 +9,8 @@ namespace Cobinhood.API.Csharp.Client.Models.Trading
         public bool Success { get; set; }
         [JsonProperty("result")]
         public OrderInfoResult Result { get; set; }
+        [JsonProperty("error")]
+        public Error Error { get; set; }
     }
 
     public class Order

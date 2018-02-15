@@ -49,28 +49,34 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CobinhoodTest.cs" />
+    <Compile Include="CobinhoodChartTest.cs" />
+    <Compile Include="CobinhoodMarketTest.cs" />
+    <Compile Include="CobinhoodSystemTest.cs" />
+    <Compile Include="CobinhoodTradingTest.cs" />
+    <Compile Include="CobinhoodWalletTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cobinhood.API.Csharp.Client.Domain\Cobinhood.API.Csharp.Client.Domain.csproj">
-      <Project>{e255f763-a2fe-43a8-9331-019796c935c7}</Project>
-      <Name>Binance.API.Csharp.Client.Domain</Name>
+      <Project>{E255F763-A2FE-43A8-9331-019796C935C7}</Project>
+      <Name>Cobinhood.API.Csharp.Client.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cobinhood.API.Csharp.Client.Models\Cobinhood.API.Csharp.Client.Models.csproj">
       <Project>{7cf40eb8-d81d-40b5-b849-17e5662175d6}</Project>
-      <Name>Binance.API.Csharp.Client.Models</Name>
+      <Name>Cobinhood.API.Csharp.Client.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cobinhood.API.Csharp.Client\Cobinhood.API.Csharp.Client.csproj">
       <Project>{ec2a020e-338a-46ee-9d08-c158cbd49c92}</Project>
-      <Name>Binance.API.Csharp.Client</Name>
+      <Name>Cobinhood.API.Csharp.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

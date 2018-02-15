@@ -50,6 +50,7 @@
     <Compile Include="Enums\OrderType.cs" />
     <Compile Include="Enums\Timeframe.cs" />
     <Compile Include="Enums\WithdrawalStatus.cs" />
+    <Compile Include="General\Error.cs" />
     <Compile Include="Market\CurrenciesInfo.cs" />
     <Compile Include="Market\OrderBookInfo.cs" />
     <Compile Include="Market\RecentTradesInfo.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="System\SystemInformation.cs" />
     <Compile Include="System\SystemTime.cs" />
     <Compile Include="Trading\AllOrdersInfo.cs" />
+    <Compile Include="Trading\NewOrder.cs" />
     <Compile Include="Trading\OrderHistoryInfo.cs" />
     <Compile Include="Trading\OrderInfo.cs" />
     <Compile Include="Trading\OrderTradesInfo.cs" />

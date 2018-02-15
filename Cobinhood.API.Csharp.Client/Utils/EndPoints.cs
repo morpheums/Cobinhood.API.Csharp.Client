@@ -19,7 +19,7 @@
         #endregion
 
         #region Chart Endpoints
-        public static readonly string GetCandles = "/v1/chart/candles/";
+        public static readonly string GetCandles = "/v1/chart/candles/<trading_pair_id>";
         #endregion
 
         #region Trading Endpoints

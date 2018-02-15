@@ -14,6 +14,6 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// <param name="isSigned">Specifies if the request needs a signature.</param>
         /// <param name="parameters">Request parameters.</param>
         /// <returns></returns>
-        Task<T> CallAsync<T>(ApiMethod method, string endpoint, string parameters = null);
+        Task<T> CallAsync<T>(ApiMethod method, string endpoint, string parameters = null, object data = null);
     }
 }

@@ -108,7 +108,7 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// <param name="price">Quote price.</param>
         /// <param name="size">Base amount.</param>
         /// <returns></returns>
-        Task<PlacedOrderInfo> PlaceOrder(string quoteSymbol, string baseSymbol, OrderSide orderSide, OrderType orderType, string price, string size);
+        Task<PlacedOrderInfo> PlaceOrder(string quoteSymbol, string baseSymbol, OrderSide orderSide, OrderType orderType, string size, string price = "");
 
         /// <summary>
         /// Modify a single order.
@@ -189,7 +189,7 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// </summary>
         /// <param name="withdrawalId">Withdrawal id.</param>
         /// <returns></returns>
-        Task<WithdrawalInfo> GetWithdrawal(string withdrawalId = "");
+        Task<WithdrawalInfo> GetWithdrawal(string withdrawalId);
 
         /// <summary>
         /// Get All Withdrawals.
@@ -199,14 +199,14 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// <param name="limit">Limits number of orders per page.</param>
         /// <param name="page">Page number to retrieve.</param>
         /// <returns></returns>
-        Task<AllWithdrawalInfo> GetAllWithdrawals(WithdrawalStatus withdrawalStatus, string currency = "", int? limit = null, int? page = null);
+        Task<AllWithdrawalInfo> GetAllWithdrawals(string currency = "", WithdrawalStatus withdrawalStatus = WithdrawalStatus.All, int? limit = null, int? page = null);
 
         /// <summary>
         /// Get Deposit Information.
         /// </summary>
         /// <param name="depositId">Deposit id.</param>
         /// <returns></returns>
-        Task<DepositInfo> GetDeposit(string depositId = "");
+        Task<DepositInfo> GetDeposit(string depositId);
 
         /// <summary>
         /// Get All Deposits.

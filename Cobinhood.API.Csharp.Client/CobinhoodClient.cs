@@ -4,9 +4,6 @@ using Cobinhood.API.Csharp.Client.Models.Enums;
 using Cobinhood.API.Csharp.Client.Models.Market;
 using Cobinhood.API.Csharp.Client.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.async Tasks;
 using Cobinhood.API.Csharp.Client.Models.Chart;
 using Cobinhood.API.Csharp.Client.Models.System;
 using Cobinhood.API.Csharp.Client.Models.Trading;
@@ -187,9 +184,38 @@ namespace Cobinhood.API.Csharp.Client
         }
 
         /// <see cref="ICobinhoodClient.PlaceOrder(string, string, OrderSide, OrderType, string, string)"/>
-        public async Task<PlacedOrderInfo> PlaceOrder(string quoteSymbol, string baseSymbol, OrderSide orderSide, OrderType orderType, string price, string size)
+        public async Task<PlacedOrderInfo> PlaceOrder(string quoteSymbol, string baseSymbol, OrderSide orderSide, OrderType orderType, string size, string price = "")
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(quoteSymbol))
+            {
+                throw new ArgumentException("QuoteSymbol cannot be empty. ", "quoteSymbol");
+            }
+            if (string.IsNullOrWhiteSpace(baseSymbol))
+            {
+                throw new ArgumentException("BaseSymbol cannot be empty. ", "baseSymbol");
+            }
+            if (orderType != OrderType.Market && string.IsNullOrEmpty(price))
+            {
+                throw new ArgumentException("Price cannot be empty. ", "price");
+            }
+            if (string.IsNullOrWhiteSpace(size))
+            {
+                throw new ArgumentException("Size cannot be empty. ", "size");
+            }
+
+            var tradingPair = (quoteSymbol + "-" + baseSymbol).ToUpper();
+            var newOrder = new NewOrder()
+            {
+                trading_pair_id = tradingPair,
+                side = orderSide.GetDescription(),
+                type = orderType.GetDescription(),
+                size = size,
+                price = price,
+            };
+
+            var result = await _apiClient.CallAsync<PlacedOrderInfo>(ApiMethod.POST, EndPoints.PlaceOrder, "", newOrder);
+
+            return result;
         }
 
         /// <see cref="ICobinhoodClient.ModifyOrder(string, string, string)"/>
@@ -288,49 +314,92 @@ namespace Cobinhood.API.Csharp.Client
         /// <see cref="ICobinhoodClient.GetWalletBalances"/>
         public async Task<WalletBalancesInfo> GetWalletBalances()
         {
-            throw new NotImplementedException();
+            var result = await _apiClient.CallAsync<WalletBalancesInfo>(ApiMethod.GET, EndPoints.GetWalletBalances);
+
+            return result;
         }
 
         /// <see cref="ICobinhoodClient.GetLedgerEntries(string, int?, int?)"/>
         public async Task<LedgerEntriesInfo> GetLedgerEntries(string currency = "", int? limit = null, int? page = null)
         {
-            throw new NotImplementedException();
+            var parameters = (string.IsNullOrWhiteSpace(currency) ? "" : $"currency={currency}")
+                + (limit.HasValue ? $"&limit={limit.Value}" : "")
+                + (page.HasValue ? $"&page={page.Value}" : "");
+
+            var result = await _apiClient.CallAsync<LedgerEntriesInfo>(ApiMethod.GET, EndPoints.GetLedgerEntries, parameters);
+
+            return result;
         }
 
         /// <see cref="ICobinhoodClient.GetDepositAddresses(string)"/>
         public async Task<DepositAddressesInfo> GetDepositAddresses(string currency = "")
         {
-            throw new NotImplementedException();
+            var parameters = (string.IsNullOrWhiteSpace(currency) ? "" : $"currency={currency}");
+
+            var result = await _apiClient.CallAsync<DepositAddressesInfo>(ApiMethod.GET, EndPoints.GetDepositAddresses, parameters);
+
+            return result;
         }
 
         /// <see cref="ICobinhoodClient.GetWithdrawalAddresses(string)"/>
         public async Task<WithdrawalAddressesInfo> GetWithdrawalAddresses(string currency = "")
         {
-            throw new NotImplementedException();
+            var parameters = (string.IsNullOrWhiteSpace(currency) ? "" : $"currency={currency}");
+
+            var result = await _apiClient.CallAsync<WithdrawalAddressesInfo>(ApiMethod.GET, EndPoints.GetWithdrawalAddresses, parameters);
+
+            return result;
         }
 
         /// <see cref="ICobinhoodClient.GetWithdrawal(string)"/>
-        public async Task<WithdrawalInfo> GetWithdrawal(string withdrawalId = "")
+        public async Task<WithdrawalInfo> GetWithdrawal(string withdrawalId)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(withdrawalId))
+            {
+                throw new ArgumentException("WithdrawalId cannot be empty. ", "withdrawalId");
+            }
+
+            var finalEndpoint = EndPoints.GetWithdrawal.Replace("<withdrawal_id>", withdrawalId);
+
+            var result = await _apiClient.CallAsync<WithdrawalInfo>(ApiMethod.GET, finalEndpoint);
+
+            return result;
         }
 
         /// <see cref="ICobinhoodClient.GetAllWithdrawals(WithdrawalStatus, string, int?, int?)"/>
-        public async Task<AllWithdrawalInfo> GetAllWithdrawals(WithdrawalStatus withdrawalStatus, string currency = "", int? limit = null, int? page = null)
+        public async Task<AllWithdrawalInfo> GetAllWithdrawals(string currency = "", WithdrawalStatus withdrawalStatus = WithdrawalStatus.All, int? limit = null, int? page = null)
         {
-            throw new NotImplementedException();
+            var parameters = (string.IsNullOrWhiteSpace(currency) ? "" : $"currency={currency}")
+                + (withdrawalStatus != WithdrawalStatus.All ? $"&status={withdrawalStatus.GetDescription()}" : "")
+              + (limit.HasValue ? $"&limit={limit.Value}" : "")
+              + (page.HasValue ? $"&page={page.Value}" : "");
+
+            var result = await _apiClient.CallAsync<AllWithdrawalInfo>(ApiMethod.GET, EndPoints.GetAllWithdrawals, parameters);
+
+            return result;
         }
 
         /// <see cref="ICobinhoodClient.GetDeposit(string)"/>
-        public async Task<DepositInfo> GetDeposit(string depositId = "")
+        public async Task<DepositInfo> GetDeposit(string depositId)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(depositId))
+            {
+                throw new ArgumentException("DepositId cannot be empty. ", "depositId");
+            }
+
+            var finalEndpoint = EndPoints.GetDeposit.Replace("<deposit_id>", depositId);
+
+            var result = await _apiClient.CallAsync<DepositInfo>(ApiMethod.GET, finalEndpoint);
+
+            return result;
         }
 
         /// <see cref="ICobinhoodClient.GetAllDeposits"/>
         public async Task<AllDepositsInfo> GetAllDeposits()
         {
-            throw new NotImplementedException();
+            var result = await _apiClient.CallAsync<AllDepositsInfo>(ApiMethod.GET, EndPoints.GetAllDeposits);
+
+            return result;
         }
         #endregion
     }
