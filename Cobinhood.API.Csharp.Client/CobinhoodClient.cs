@@ -52,7 +52,15 @@ namespace Cobinhood.API.Csharp.Client
         /// <see cref="ICobinhoodClient.GetAllTradingPairs"/>
         public async Task<TradingPairsInfo> GetAllTradingPairs()
         {
-            var result = await _apiClient.CallAsync<TradingPairsInfo>(ApiMethod.GET, EndPoints.GetAllTradingPairs);
+            var result = await _apiClient.CallAsync<TradingPairsInfo>(ApiMethod.GET, EndPoints.GetTradingStatistics);
+
+            return result;
+        }
+
+        /// <see cref="ICobinhoodClient.GetTradingStatics"/>
+        public async Task<TradingStaticsInfo> GetTradingStatics()
+        {
+            var result = await _apiClient.CallAsync<TradingStaticsInfo>(ApiMethod.GET, EndPoints.GetTradingStatistics);
 
             return result;
         }

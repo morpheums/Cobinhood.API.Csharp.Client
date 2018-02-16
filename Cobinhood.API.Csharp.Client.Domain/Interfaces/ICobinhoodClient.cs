@@ -39,6 +39,12 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         Task<TradingPairsInfo> GetAllTradingPairs();
 
         /// <summary>
+        /// Get info of trading static.
+        /// </summary>
+        /// <returns></returns>
+        Task<TradingStaticsInfo> GetTradingStatics();
+
+        /// <summary>
         /// Get order book for the trading pair containing all asks/bids.
         /// </summary>
         /// <param name="quoteSymbol">Quote symbol to look for.</param>

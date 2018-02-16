@@ -13,6 +13,7 @@
         #region Market Endpoints
         public static readonly string GetAllCurrencies = "/v1/market/currencies";
         public static readonly string GetAllTradingPairs = "/v1/market/trading_pairs";
+        public static readonly string GetTradingStatistics = "/v1/market/stats";
         public static readonly string GetOrderBook = "/v1/market/orderbooks/<trading_pair_id>";
         public static readonly string GetTicker = "/v1/market/tickers/<trading_pair_id>";
         public static readonly string GetRecentTrades = "/v1/market/trades/<trading_pair_id>";

@@ -25,6 +25,13 @@ namespace Cobinhood.API.Csharp.Client.Test
         }
 
         [TestMethod]
+        public void TestGetTradingStatics()
+        {
+            var tradingStatics = cobinhoodClient.GetTradingStatics().Result;
+            Assert.AreEqual(tradingStatics.Success, true);
+        }
+
+        [TestMethod]
         public void TestGetOrderBook()
         {
             var orderBook = cobinhoodClient.GetOrderBook("ETH", "USD").Result;
