@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Chart\CandlesInfo.cs" />
     <Compile Include="Enums\ApiMethods.cs" />
+    <Compile Include="Enums\WebSocketType.cs" />
     <Compile Include="Enums\OrderSide.cs" />
     <Compile Include="Enums\OrderType.cs" />
     <Compile Include="Enums\Timeframe.cs" />
@@ -80,12 +81,12 @@
     <Compile Include="Wallet\Withdrawal.cs" />
     <Compile Include="Wallet\WithdrawalAddressesInfo.cs" />
     <Compile Include="Wallet\WithdrawalInfo.cs" />
+    <Compile Include="WebSocket\WebSocketRequest.cs" />
+    <Compile Include="WebSocket\WebSocketResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WebSocket\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,6 +9,7 @@ using Cobinhood.API.Csharp.Client.Models.System;
 using Cobinhood.API.Csharp.Client.Models.Trading;
 using Cobinhood.API.Csharp.Client.Models.Wallet;
 using System.Threading.Tasks;
+using Cobinhood.API.Csharp.Client.Models.WebSocket;
 
 namespace Cobinhood.API.Csharp.Client
 {
@@ -408,6 +409,115 @@ namespace Cobinhood.API.Csharp.Client
             var result = await _apiClient.CallAsync<AllDepositsInfo>(ApiMethod.GET, EndPoints.GetAllDeposits);
 
             return result;
+        }
+        #endregion
+
+        #region WebkSockets
+        /// <see cref="ICobinhoodClient.ListenOrderEndpoint(ApiClientAbstract.MessageHandler{dynamic})"/>
+        public void ListenOrderEndpoint(ApiClientAbstract.MessageHandler<dynamic> messageHandler)
+        {
+            var requestData = new WebSocketRequest()
+            {
+                Action = "suscribe",
+                Type = "order"
+            };
+            _apiClient.SuscribeToWebSocket(messageHandler, requestData);
+        }
+
+        /// <see cref="ICobinhoodClient.ListenTradesEndpoint(string, string, ApiClientAbstract.MessageHandler{dynamic})"/>
+        public void ListenTradesEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler)
+        {
+            if (string.IsNullOrWhiteSpace(quoteSymbol))
+            {
+                throw new ArgumentException("QuoteSymbol cannot be empty. ", "quoteSymbol");
+            }
+            if (string.IsNullOrWhiteSpace(baseSymbol))
+            {
+                throw new ArgumentException("BaseSymbol cannot be empty. ", "baseSymbol");
+            }
+
+            var tradingPair = (quoteSymbol + "-" + baseSymbol).ToUpper();
+
+            var requestData = new WebSocketRequest()
+            {
+                TradingPairId = tradingPair
+            };
+
+            _apiClient.SuscribeToWebSocket(messageHandler, requestData);
+        }
+
+        /// <see cref="ICobinhoodClient.ListenOrderBookEndpoint(string, string, string, ApiClientAbstract.MessageHandler{dynamic})"/>
+        public void ListenOrderBookEndpoint(string quoteSymbol, string baseSymbol, string precision, ApiClientAbstract.MessageHandler<dynamic> messageHandler)
+        {
+            if (string.IsNullOrWhiteSpace(quoteSymbol))
+            {
+                throw new ArgumentException("QuoteSymbol cannot be empty. ", "quoteSymbol");
+            }
+            if (string.IsNullOrWhiteSpace(baseSymbol))
+            {
+                throw new ArgumentException("BaseSymbol cannot be empty. ", "baseSymbol");
+            }
+
+            var tradingPair = (quoteSymbol + "-" + baseSymbol).ToUpper();
+
+            var requestData = new WebSocketRequest()
+            {
+                TradingPairId = tradingPair,
+                Precision = precision
+            };
+
+            _apiClient.SuscribeToWebSocket(messageHandler, requestData);
+        }
+
+        /// <see cref="ICobinhoodClient.ListenTickerEndpoint(string, string, ApiClientAbstract.MessageHandler{dynamic})"/>
+        public void ListenTickerEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler)
+        {
+            if (string.IsNullOrWhiteSpace(quoteSymbol))
+            {
+                throw new ArgumentException("QuoteSymbol cannot be empty. ", "quoteSymbol");
+            }
+            if (string.IsNullOrWhiteSpace(baseSymbol))
+            {
+                throw new ArgumentException("BaseSymbol cannot be empty. ", "baseSymbol");
+            }
+
+            var tradingPair = (quoteSymbol + "-" + baseSymbol).ToUpper();
+
+            var requestData = new WebSocketRequest()
+            {
+                TradingPairId = tradingPair
+            };
+
+            _apiClient.SuscribeToWebSocket(messageHandler, requestData);
+        }
+
+        /// <see cref="ICobinhoodClient.ListenCandleEndpoint(string, string, Timeframe, ApiClientAbstract.MessageHandler{dynamic})"/>
+        public void ListenCandleEndpoint(string quoteSymbol, string baseSymbol, Timeframe timeframe, ApiClientAbstract.MessageHandler<dynamic> messageHandler)
+        {
+            if (string.IsNullOrWhiteSpace(quoteSymbol))
+            {
+                throw new ArgumentException("QuoteSymbol cannot be empty. ", "quoteSymbol");
+            }
+            if (string.IsNullOrWhiteSpace(baseSymbol))
+            {
+                throw new ArgumentException("BaseSymbol cannot be empty. ", "baseSymbol");
+            }
+
+            var tradingPair = (quoteSymbol + "-" + baseSymbol).ToUpper();
+
+            var requestData = new WebSocketRequest()
+            {
+                TradingPairId = tradingPair,
+                Timeframe = timeframe.GetDescription()
+            };
+
+            _apiClient.SuscribeToWebSocket(messageHandler, requestData);
+        }
+
+        /// <see cref="ICobinhoodClient.ListenPingPongEndpoint(ApiClientAbstract.MessageHandler{dynamic})"/>
+        public void ListenPingPongEndpoint(ApiClientAbstract.MessageHandler<dynamic> messageHandler)
+        {
+            _apiClient.SuscribeToWebSocket(messageHandler);
         }
         #endregion
     }

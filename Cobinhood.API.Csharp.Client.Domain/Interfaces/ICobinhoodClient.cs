@@ -1,9 +1,11 @@
-﻿using Cobinhood.API.Csharp.Client.Models.Chart;
+﻿using Cobinhood.API.Csharp.Client.Domain.Abstract;
+using Cobinhood.API.Csharp.Client.Models.Chart;
 using Cobinhood.API.Csharp.Client.Models.Enums;
 using Cobinhood.API.Csharp.Client.Models.Market;
 using Cobinhood.API.Csharp.Client.Models.System;
 using Cobinhood.API.Csharp.Client.Models.Trading;
 using Cobinhood.API.Csharp.Client.Models.Wallet;
+using Cobinhood.API.Csharp.Client.Models.WebSocket;
 using System;
 using System.Threading.Tasks;
 
@@ -220,5 +222,20 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         /// <returns></returns>
         Task<AllDepositsInfo> GetAllDeposits();
         #endregion
+
+        #region Web Socket Client
+        void ListenOrderEndpoint(ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+
+        void ListenTradesEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+
+        void ListenOrderBookEndpoint(string quoteSymbol, string baseSymbol, string precision, ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+
+        void ListenTickerEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+
+        void ListenCandleEndpoint(string quoteSymbol, string baseSymbol, Timeframe timeframe, ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+
+        void ListenPingPongEndpoint(ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+        #endregion
+
     }
 }

@@ -59,6 +59,7 @@
     <Compile Include="CobinhoodSystemTest.cs" />
     <Compile Include="CobinhoodTradingTest.cs" />
     <Compile Include="CobinhoodWalletTest.cs" />
+    <Compile Include="CobinhoodWebsocketTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

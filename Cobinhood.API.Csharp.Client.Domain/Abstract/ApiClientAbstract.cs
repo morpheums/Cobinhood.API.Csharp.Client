@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using WebSocketSharp;
 
 namespace Cobinhood.API.Csharp.Client.Domain.Abstract
 {
@@ -27,6 +29,11 @@ namespace Cobinhood.API.Csharp.Client.Domain.Abstract
         public readonly string _webSocketEndpoint = "";
 
         /// <summary>
+        /// Used to store all the opened web sockets.
+        /// </summary>
+        public List<WebSocket> _openSockets;
+
+        /// <summary>
         /// Delegate for the messages returned by the websockets.
         /// </summary>
         /// <typeparam name="T">Type used to parsed the response message.</typeparam>
@@ -45,6 +52,7 @@ namespace Cobinhood.API.Csharp.Client.Domain.Abstract
             _apiUrl = apiUrl;
             _apiKey = apiKey;
             _webSocketEndpoint = webSocketEndpoint;
+            _openSockets = new List<WebSocket>();
             _httpClient = new HttpClient
             {
                 BaseAddress = new Uri(_apiUrl)

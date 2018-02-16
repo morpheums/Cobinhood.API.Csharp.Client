@@ -6,8 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Cobinhood.API.Csharp.Client.Utils;
 using Cobinhood.API.Csharp.Client.Models.Enums;
-using System.Net;
-using Newtonsoft.Json.Linq;
+using WebSocketSharp;
 
 namespace Cobinhood.API.Csharp.Client
 {
@@ -50,6 +49,60 @@ namespace Cobinhood.API.Csharp.Client
             {
                 throw ex;
             }
+        }
+
+        public void SuscribeToWebSocket<T>(MessageHandler<T> messageDelegate, object data = null)
+        {
+            try
+            {
+                var finalEndpoint = _webSocketEndpoint;
+
+                var ws = new WebSocket(finalEndpoint);
+
+                ws.OnMessage += (sender, e) =>
+                {
+                    dynamic eventData = JsonConvert.DeserializeObject<T>(e.Data);
+                    messageDelegate(eventData);
+                };
+
+                ws.OnClose += (sender, e) =>
+                {
+                    _openSockets.Remove(ws);
+                };
+
+                ws.OnError += (sender, e) =>
+                {
+                    _openSockets.Remove(ws);
+                };
+
+
+                ws.Connect();
+
+                if (data != null)
+                {
+                    var serializedData = JsonConvert.SerializeObject(data, Formatting.Indented , new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        DefaultValueHandling = DefaultValueHandling.Ignore
+                    });
+
+                    var finalData = serializedData.Replace(@"""", @"\""");
+
+                    ws.Send(finalData);
+                }
+
+                _openSockets.Add(ws);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void UnsuscribeFromWebSocket<T>(object data)
+        {
+            throw new NotImplementedException();
         }
     }
 }
