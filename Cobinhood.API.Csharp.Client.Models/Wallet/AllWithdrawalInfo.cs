@@ -16,6 +16,13 @@ namespace Cobinhood.API.Csharp.Client.Models.Wallet
 
     public class AllWithdrawalResult
     {
+        [JsonProperty("withdrawals")]
         public IEnumerable<Withdrawal> Withdrawals { get; set; }
+        [JsonProperty("limit")]
+        public int Limit { get; set; }
+        [JsonProperty("page")]
+        public int Page { get; set; }
+        [JsonProperty("total_page")]
+        public int TotalPage { get; set; }
     }
 }

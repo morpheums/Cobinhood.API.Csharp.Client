@@ -63,8 +63,7 @@ namespace Cobinhood.API.Csharp.Client.Domain.Abstract
         {
             if (!string.IsNullOrEmpty(_apiKey))
             {
-                _httpClient.DefaultRequestHeaders
-                     .Add("authorization", _apiKey);
+                _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", _apiKey);
             }
 
             _httpClient.DefaultRequestHeaders

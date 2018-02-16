@@ -55,7 +55,7 @@ namespace Cobinhood.API.Csharp.Client.Test
         [TestMethod]
         public void TestGetDeposit()
         {
-            var result = cobinhoodClient.GetDeposit("62056df2d4cf8fb9b15c7238b89a1438").Result;
+            var result = cobinhoodClient.GetDeposit("00227f3d-02d7-47cb-8cbc-7768ee04815f").Result;
             Assert.AreEqual(result.Success, true);
         }
 
