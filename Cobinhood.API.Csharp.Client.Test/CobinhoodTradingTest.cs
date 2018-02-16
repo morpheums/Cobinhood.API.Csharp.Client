@@ -14,14 +14,14 @@ namespace Cobinhood.API.Csharp.Client.Test
         [TestMethod]
         public void TestGetOrder()
         {
-            var order = cobinhoodClient.GetOrder("37f550a202aa6a3fe120f420637c894c").Result;
+            var order = cobinhoodClient.GetOrder("6142677c-c211-40e2-bf44-ca96884120eb").Result;
             Assert.AreEqual(order.Success, true);
         }
 
         [TestMethod]
         public void TestGetOrderTrades()
         {
-            var orderTrades = cobinhoodClient.GetOrderTrades("37f550a202aa6a3fe120f420637c894c").Result;
+            var orderTrades = cobinhoodClient.GetOrderTrades("6142677c-c211-40e2-bf44-ca96884120eb").Result;
             Assert.AreEqual(orderTrades.Success, true);
         }
 
@@ -35,63 +35,63 @@ namespace Cobinhood.API.Csharp.Client.Test
         [TestMethod]
         public void TestMarketBuyOrder()
         {
-            var newOrder = cobinhoodClient.PlaceOrder("COB", "ETH", OrderSide.Bid, OrderType.Market, "10").Result;
+            var newOrder = cobinhoodClient.PlaceOrder("COB", "ETH", OrderSide.Bid, OrderType.Market, "1000").Result;
             Assert.AreEqual(newOrder.Success, true);
         }
 
         [TestMethod]
         public void TestMarketSellOrder()
         {
-            var newOrder = cobinhoodClient.PlaceOrder("COB", "ETH", OrderSide.Ask, OrderType.Market, "10").Result;
+            var newOrder = cobinhoodClient.PlaceOrder("ETH", "BTC", OrderSide.Ask, OrderType.Market, "0.048").Result;
             Assert.AreEqual(newOrder.Success, true);
         }
 
         [TestMethod]
         public void TestLimitBuyOrder()
         {
-            var newOrder = cobinhoodClient.PlaceOrder("COB", "ETH", OrderSide.Bid, OrderType.Limit, "10", "0.00017").Result;
+            var newOrder = cobinhoodClient.PlaceOrder("COB", "BTC", OrderSide.Bid, OrderType.Limit, "200", "0.000022").Result;
             Assert.AreEqual(newOrder.Success, true);
         }
 
         [TestMethod]
         public void TestLimitSellOrder()
         {
-            var newOrder = cobinhoodClient.PlaceOrder("COB", "ETH", OrderSide.Ask, OrderType.Limit, "10", "0.0025").Result;
+            var newOrder = cobinhoodClient.PlaceOrder("COB", "BTC", OrderSide.Ask, OrderType.Limit, "200", "0.000030").Result;
             Assert.AreEqual(newOrder.Success, true);
         }
 
         [TestMethod]
         public void TestModifyOrder()
         {
-            var result = cobinhoodClient.ModifyOrder("37f550a202aa6a3fe120f420637c894c", "0.0001817", "10").Result;
+            var result = cobinhoodClient.ModifyOrder("1d193afc-0c81-4e1e-b338-37be7f2270d6", "0.0000600", "200").Result;
             Assert.AreEqual(result.Success, true);
         }
 
         [TestMethod]
         public void TestCancelOrder()
         {
-            var result = cobinhoodClient.CancelOrder("37f550a202aa6a3fe120f420637c894c").Result;
+            var result = cobinhoodClient.CancelOrder("f29922c5-918d-4bcd-9d0a-5d646078bd27").Result;
             Assert.AreEqual(result.Success, true);
         }
 
         [TestMethod]
         public void TestGetOrderHistory()
         {
-            var result = cobinhoodClient.GetOrderHistory("COB", "ETH").Result;
+            var result = cobinhoodClient.GetOrderHistory("ETH", "BTC").Result;
             Assert.AreEqual(result.Success, true);
         }
 
         [TestMethod]
         public void TestGetTrade()
         {
-            var trade = cobinhoodClient.GetTrade("09619448-e48a-3bd7-3d49-3a4194f9020b").Result;
+            var trade = cobinhoodClient.GetTrade("2051e763-3d16-4aa3-831d-af6a0f92b84a").Result;
             Assert.AreEqual(trade.Success, true);
         }
 
         [TestMethod]
         public void TestGetTradeHistory()
         {
-            var result = cobinhoodClient.GetTradeHistory("COB", "ETH").Result;
+            var result = cobinhoodClient.GetTradeHistory("ETH", "BTC").Result;
             Assert.AreEqual(result.Success, true);
         }
     }

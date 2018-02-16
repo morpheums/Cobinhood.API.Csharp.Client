@@ -41,6 +41,12 @@ namespace Cobinhood.API.Csharp.Client.Models.Trading
     public class AllOrdersResult
     {
         [JsonProperty("orders")]
-        public IList<OrderDetail> Orders { get; set; }
+        public IEnumerable<OrderDetail> Orders { get; set; }
+        [JsonProperty("limit")]
+        public int Limit { get; set; }
+        [JsonProperty("page")]
+        public int Page { get; set; }
+        [JsonProperty("total_page")]
+        public int TotalPage { get; set; }
     }
 }

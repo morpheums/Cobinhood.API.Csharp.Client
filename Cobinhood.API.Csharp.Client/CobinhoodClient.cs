@@ -174,7 +174,7 @@ namespace Cobinhood.API.Csharp.Client
         {
             var tradingPair = (quoteSymbol + "-" + baseSymbol).ToUpper();
 
-            var parameters = (string.IsNullOrWhiteSpace(tradingPair) ? "" : $"trading_pair_id={tradingPair}")
+            var parameters = (string.IsNullOrWhiteSpace(quoteSymbol) && string.IsNullOrWhiteSpace(quoteSymbol) ? "" : $"trading_pair_id={tradingPair}")
                 + (limit.HasValue ? $"&limit={limit.Value}" : "")
                 + (page.HasValue ? $"&page={page.Value}" : "");
 

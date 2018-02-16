@@ -1,5 +1,6 @@
 ﻿using Cobinhood.API.Csharp.Client.Models.General;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Cobinhood.API.Csharp.Client.Models.Trading
@@ -36,11 +37,19 @@ namespace Cobinhood.API.Csharp.Client.Models.Trading
         public long Timestamp { get; set; }
         [JsonProperty("eq_price")]
         public string EqPrice { get; set; }
+        [JsonProperty("completed_at")]
+        public DateTime Completed_at { get; set; }
     }
 
     public class OrderHistoryResult
     {
-        [JsonProperty("order_history")]
-        public IList<OrderHistory> OrderHistory { get; set; }
+        [JsonProperty("orders")]
+        public IEnumerable<OrderHistory> OrderHistory { get; set; }
+        [JsonProperty("limit")]
+        public int Limit { get; set; }
+        [JsonProperty("page")]
+        public int Page { get; set; }
+        [JsonProperty("total_page")]
+        public int TotalPage { get; set; }
     }
 }
