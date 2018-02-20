@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Cobinhood.API.Csharp.Client.Utils;
 using Cobinhood.API.Csharp.Client.Models.Enums;
 using WebSocketSharp;
+using System.Collections.Generic;
 
 namespace Cobinhood.API.Csharp.Client
 {
@@ -53,51 +54,50 @@ namespace Cobinhood.API.Csharp.Client
 
         public void SuscribeToWebSocket<T>(MessageHandler<T> messageDelegate, object data = null)
         {
-            try
+            var finalEndpoint = _webSocketEndpoint;
+
+            var ws = new WebSocket(finalEndpoint)
             {
-                var finalEndpoint = _webSocketEndpoint;
-
-                var ws = new WebSocket(finalEndpoint);
-
-                ws.OnMessage += (sender, e) =>
+                CustomHeaders = new Dictionary<string, string>
                 {
-                    dynamic eventData = JsonConvert.DeserializeObject<T>(e.Data);
-                    messageDelegate(eventData);
-                };
-
-                ws.OnClose += (sender, e) =>
-                {
-                    _openSockets.Remove(ws);
-                };
-
-                ws.OnError += (sender, e) =>
-                {
-                    _openSockets.Remove(ws);
-                };
-
-
-                ws.Connect();
-
-                if (data != null)
-                {
-                    var serializedData = JsonConvert.SerializeObject(data, Formatting.Indented , new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Ignore,
-                        DefaultValueHandling = DefaultValueHandling.Ignore
-                    });
-
-                    var finalData = serializedData.Replace(@"""", @"\""");
-
-                    ws.Send(finalData);
+                    {"authorization", _apiKey},
+                    {"nonce", DateTime.Now.GetUnixTimeStamp()}
                 }
+            };
 
-                _openSockets.Add(ws);
-            }
-            catch (Exception ex)
+            ws.OnMessage += (sender, e) =>
             {
+                dynamic eventData = JsonConvert.DeserializeObject<T>(e.Data);
+                messageDelegate(eventData);
+            };
 
-                throw ex;
+            ws.OnClose += (sender, e) =>
+            {
+                _openSockets.Remove(ws);
+            };
+
+            ws.OnError += (sender, e) =>
+            {
+                _openSockets.Remove(ws);
+            };
+
+            ws.Connect();
+
+            if (data != null)
+            {
+                var serializedData = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Ignore
+                });
+
+                var finalData = serializedData;
+
+                ws.Send(finalData);
+
             }
+
+            _openSockets.Add(ws);
         }
 
         public void UnsuscribeFromWebSocket<T>(object data)

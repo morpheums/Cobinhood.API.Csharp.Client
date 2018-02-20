@@ -418,7 +418,7 @@ namespace Cobinhood.API.Csharp.Client
         {
             var requestData = new WebSocketRequest()
             {
-                Action = "suscribe",
+                Action = "subscribe",
                 Type = "order"
             };
             _apiClient.SuscribeToWebSocket(messageHandler, requestData);
@@ -440,14 +440,16 @@ namespace Cobinhood.API.Csharp.Client
 
             var requestData = new WebSocketRequest()
             {
+                Action = "subscribe",
+                Type = "trade",
                 TradingPairId = tradingPair
             };
 
             _apiClient.SuscribeToWebSocket(messageHandler, requestData);
         }
 
-        /// <see cref="ICobinhoodClient.ListenOrderBookEndpoint(string, string, string, ApiClientAbstract.MessageHandler{dynamic})"/>
-        public void ListenOrderBookEndpoint(string quoteSymbol, string baseSymbol, string precision, ApiClientAbstract.MessageHandler<dynamic> messageHandler)
+        /// <see cref="ICobinhoodClient.ListenOrderBookEndpoint(string, string, ApiClientAbstract.MessageHandler{dynamic}, string)"/>
+        public void ListenOrderBookEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler, string precision = "PRECISION")
         {
             if (string.IsNullOrWhiteSpace(quoteSymbol))
             {
@@ -462,6 +464,8 @@ namespace Cobinhood.API.Csharp.Client
 
             var requestData = new WebSocketRequest()
             {
+                Action = "subscribe",
+                Type = "order-book",
                 TradingPairId = tradingPair,
                 Precision = precision
             };
@@ -485,6 +489,8 @@ namespace Cobinhood.API.Csharp.Client
 
             var requestData = new WebSocketRequest()
             {
+                Action = "subscribe",
+                Type = "ticker",
                 TradingPairId = tradingPair
             };
 
@@ -507,6 +513,8 @@ namespace Cobinhood.API.Csharp.Client
 
             var requestData = new WebSocketRequest()
             {
+                Action = "subscribe",
+                Type = "candle",
                 TradingPairId = tradingPair,
                 Timeframe = timeframe.GetDescription()
             };
@@ -517,7 +525,12 @@ namespace Cobinhood.API.Csharp.Client
         /// <see cref="ICobinhoodClient.ListenPingPongEndpoint(ApiClientAbstract.MessageHandler{dynamic})"/>
         public void ListenPingPongEndpoint(ApiClientAbstract.MessageHandler<dynamic> messageHandler)
         {
-            _apiClient.SuscribeToWebSocket(messageHandler);
+            var requestData = new WebSocketRequest()
+            {
+                Action = "ping"
+            };
+
+            _apiClient.SuscribeToWebSocket(messageHandler, requestData);
         }
         #endregion
     }

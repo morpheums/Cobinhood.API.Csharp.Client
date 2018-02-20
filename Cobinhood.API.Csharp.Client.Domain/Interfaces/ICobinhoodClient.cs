@@ -228,7 +228,7 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
 
         void ListenTradesEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler);
 
-        void ListenOrderBookEndpoint(string quoteSymbol, string baseSymbol, string precision, ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+        void ListenOrderBookEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler, string precision = "PRECISION");
 
         void ListenTickerEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler);
 
