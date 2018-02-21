@@ -235,6 +235,8 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         void ListenCandleEndpoint(string quoteSymbol, string baseSymbol, Timeframe timeframe, ApiClientAbstract.MessageHandler<dynamic> messageHandler);
 
         void ListenPingPongEndpoint(ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+
+        void UnsubscribeFromEndpoint(WebSocketType webSocketType);
         #endregion
 
     }

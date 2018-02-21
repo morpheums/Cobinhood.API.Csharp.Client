@@ -4,7 +4,7 @@ namespace Cobinhood.API.Csharp.Client.Models.Enums
 {
     public enum WebSocketType
     {
-        [Description("market")]
+        [Description("order")]
         Order,
         [Description("trade")]
         Trade,

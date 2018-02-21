@@ -100,9 +100,9 @@ namespace Cobinhood.API.Csharp.Client
             _openSockets.Add(ws);
         }
 
-        public void UnsuscribeFromWebSocket<T>(object data)
+        public void UnsuscribeFromWebSocket(object data)
         {
-            throw new NotImplementedException();
+
         }
     }
 }
