@@ -6,27 +6,27 @@ namespace Cobinhood.API.Csharp.Client.Models.Market
 {
     public class OrderBookInfo
     {
-        [JsonProperty("success")]
         public bool Success { get; set; }
-        [JsonProperty("result")]
         public OrderBookResult Result { get; set; }
-        [JsonProperty("error")]
         public Error Error { get; set; }
     }
 
     public class Orderbook
     {
-        [JsonProperty("sequence")]
         public int Sequence { get; set; }
-        [JsonProperty("bids")]
-        public IList<IList<string>> Bids { get; set; }
-        [JsonProperty("asks")]
-        public IList<IList<string>> Asks { get; set; }
+        public List<Offer> Bids { get; set; }
+        public List<Offer> Asks { get; set; }
     }
 
     public class OrderBookResult
     {
-        [JsonProperty("orderbook")]
         public Orderbook Orderbook { get; set; }
+    }
+
+    public class Offer
+    {
+        public string Price { get; set; }
+        public string Count { get; set; }
+        public string Size { get; set; }
     }
 }

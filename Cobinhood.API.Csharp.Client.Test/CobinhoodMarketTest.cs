@@ -34,21 +34,21 @@ namespace Cobinhood.API.Csharp.Client.Test
         [TestMethod]
         public void TestGetOrderBook()
         {
-            var orderBook = cobinhoodClient.GetOrderBook("ETH", "USD").Result;
+            var orderBook = cobinhoodClient.GetOrderBook("ETH", "BTC").Result;
             Assert.AreEqual(orderBook.Success, true);
         }
 
         [TestMethod]
         public void TestGetTicker()
         {
-            var ticker = cobinhoodClient.GetTicker("ETH", "USD").Result;
+            var ticker = cobinhoodClient.GetTicker("ETH", "BTC").Result;
             Assert.AreEqual(ticker.Success, true);
         }
 
         [TestMethod]
         public void TestGetRecentTrades()
         {
-            var recentTrades = cobinhoodClient.GetRecentTrades("ETH", "USD").Result;
+            var recentTrades = cobinhoodClient.GetRecentTrades("ETH", "BTC").Result;
             Assert.AreEqual(recentTrades.Success, true);
         }
     }

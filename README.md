@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://opensource.softlutionx.com" target="_blank"><img width="200"src="https://github.com/morpheums/Cobinhood.API.Csharp.Client/blob/development/Cobinhood.API.Csharp.Client/CobinhoodLogo.png?raw=true">       
+    <a href="https://cobinhood.com" target="_blank"><img width="140"src="https://github.com/morpheums/Cobinhood.API.Csharp.Client/blob/development/Cobinhood.API.Csharp.Client/CobinhoodLogo.png?raw=true">       
     </a>    
     </br> 
     <b style="font-size: 22px;">Cobinhood API Csharp Client</b>

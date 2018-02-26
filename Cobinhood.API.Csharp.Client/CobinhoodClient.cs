@@ -10,6 +10,9 @@ using Cobinhood.API.Csharp.Client.Models.Trading;
 using Cobinhood.API.Csharp.Client.Models.Wallet;
 using System.Threading.Tasks;
 using Cobinhood.API.Csharp.Client.Models.WebSocket;
+using Cobinhood.API.Csharp.Client.Configuration;
+using Newtonsoft.Json.Linq;
+using AutoMapper;
 
 namespace Cobinhood.API.Csharp.Client
 {
@@ -21,6 +24,7 @@ namespace Cobinhood.API.Csharp.Client
         /// <param name="apiClient">API client to be used for API calls.</param>
         public CobinhoodClient(IApiClient apiClient) : base(apiClient)
         {
+            MappingConfig.Initialize();
         }
 
         #region System
@@ -80,9 +84,9 @@ namespace Cobinhood.API.Csharp.Client
 
             var tradingPair = (quoteSymbol + "-" + baseSymbol).ToUpper();
             var finalEndpoint = EndPoints.GetOrderBook.Replace("<trading_pair_id>", tradingPair);
-            var result = await _apiClient.CallAsync<OrderBookInfo>(ApiMethod.GET, finalEndpoint);
+            var result = await _apiClient.CallAsync<JToken>(ApiMethod.GET, finalEndpoint);
 
-            return result;
+            return Mapper.Map<OrderBookInfo>(result);
         }
 
         /// <see cref="ICobinhoodClient.GetTicker(string, string)"/>
@@ -413,8 +417,8 @@ namespace Cobinhood.API.Csharp.Client
         #endregion
 
         #region WebkSockets
-        /// <see cref="ICobinhoodClient.ListenOrderEndpoint(ApiClientAbstract.MessageHandler{dynamic})"/>
-        public void ListenOrderEndpoint(ApiClientAbstract.MessageHandler<dynamic> messageHandler)
+        /// <see cref="ICobinhoodClient.ListenOrderEndpoint(ApiClientAbstract.MessageHandler{OrderResponse})"/>
+        public void ListenOrderEndpoint(ApiClientAbstract.MessageHandler<OrderResponse> messageHandler)
         {
             var requestData = new WebSocketRequest()
             {
@@ -424,8 +428,8 @@ namespace Cobinhood.API.Csharp.Client
             _apiClient.SuscribeToWebSocket(messageHandler, requestData);
         }
 
-        /// <see cref="ICobinhoodClient.ListenTradesEndpoint(string, string, ApiClientAbstract.MessageHandler{dynamic})"/>
-        public void ListenTradesEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler)
+        /// <see cref="ICobinhoodClient.ListenTradesEndpoint(string, string, ApiClientAbstract.MessageHandler{TradesResponse})"/>
+        public void ListenTradesEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<TradesResponse> messageHandler)
         {
             if (string.IsNullOrWhiteSpace(quoteSymbol))
             {
@@ -448,8 +452,8 @@ namespace Cobinhood.API.Csharp.Client
             _apiClient.SuscribeToWebSocket(messageHandler, requestData);
         }
 
-        /// <see cref="ICobinhoodClient.ListenOrderBookEndpoint(string, string, ApiClientAbstract.MessageHandler{dynamic}, string)"/>
-        public void ListenOrderBookEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler, string precision = "PRECISION")
+        /// <see cref="ICobinhoodClient.ListenOrderBookEndpoint(string, string, ApiClientAbstract.MessageHandler{OrderBookResponse}, string)"/>
+        public void ListenOrderBookEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<OrderBookResponse> messageHandler, string precision = "PRECISION")
         {
             if (string.IsNullOrWhiteSpace(quoteSymbol))
             {
@@ -473,8 +477,8 @@ namespace Cobinhood.API.Csharp.Client
             _apiClient.SuscribeToWebSocket(messageHandler, requestData);
         }
 
-        /// <see cref="ICobinhoodClient.ListenTickerEndpoint(string, string, ApiClientAbstract.MessageHandler{dynamic})"/>
-        public void ListenTickerEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler)
+        /// <see cref="ICobinhoodClient.ListenTickerEndpoint(string, string, ApiClientAbstract.MessageHandler{TickerResponse})"/>
+        public void ListenTickerEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<TickerResponse> messageHandler)
         {
             if (string.IsNullOrWhiteSpace(quoteSymbol))
             {
@@ -497,8 +501,8 @@ namespace Cobinhood.API.Csharp.Client
             _apiClient.SuscribeToWebSocket(messageHandler, requestData);
         }
 
-        /// <see cref="ICobinhoodClient.ListenCandleEndpoint(string, string, Timeframe, ApiClientAbstract.MessageHandler{dynamic})"/>
-        public void ListenCandleEndpoint(string quoteSymbol, string baseSymbol, Timeframe timeframe, ApiClientAbstract.MessageHandler<dynamic> messageHandler)
+        /// <see cref="ICobinhoodClient.ListenCandleEndpoint(string, string, Timeframe, ApiClientAbstract.MessageHandler{CandleResponse})"/>
+        public void ListenCandleEndpoint(string quoteSymbol, string baseSymbol, Timeframe timeframe, ApiClientAbstract.MessageHandler<CandleResponse> messageHandler)
         {
             if (string.IsNullOrWhiteSpace(quoteSymbol))
             {
@@ -517,17 +521,6 @@ namespace Cobinhood.API.Csharp.Client
                 Type = "candle",
                 TradingPairId = tradingPair,
                 Timeframe = timeframe.GetDescription()
-            };
-
-            _apiClient.SuscribeToWebSocket(messageHandler, requestData);
-        }
-
-        /// <see cref="ICobinhoodClient.ListenPingPongEndpoint(ApiClientAbstract.MessageHandler{dynamic})"/>
-        public void ListenPingPongEndpoint(ApiClientAbstract.MessageHandler<dynamic> messageHandler)
-        {
-            var requestData = new WebSocketRequest()
-            {
-                Action = "ping"
             };
 
             _apiClient.SuscribeToWebSocket(messageHandler, requestData);

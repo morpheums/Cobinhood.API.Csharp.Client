@@ -8,6 +8,8 @@ using Cobinhood.API.Csharp.Client.Utils;
 using Cobinhood.API.Csharp.Client.Models.Enums;
 using WebSocketSharp;
 using System.Collections.Generic;
+using AutoMapper;
+using Newtonsoft.Json.Linq;
 
 namespace Cobinhood.API.Csharp.Client
 {
@@ -67,8 +69,12 @@ namespace Cobinhood.API.Csharp.Client
 
             ws.OnMessage += (sender, e) =>
             {
-                dynamic eventData = JsonConvert.DeserializeObject<T>(e.Data);
-                messageDelegate(eventData);
+                var responseData = JsonConvert.DeserializeObject<JToken>(e.Data);
+                if (responseData["event"] == null)
+                {
+                    var eventData = Mapper.Map<T>(responseData);
+                    messageDelegate(eventData);
+                }
             };
 
             ws.OnClose += (sender, e) =>

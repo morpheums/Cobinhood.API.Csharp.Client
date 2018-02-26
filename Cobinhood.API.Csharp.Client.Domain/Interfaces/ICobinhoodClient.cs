@@ -224,17 +224,15 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         #endregion
 
         #region Web Socket Client
-        void ListenOrderEndpoint(ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+        void ListenOrderEndpoint(ApiClientAbstract.MessageHandler<OrderResponse> messageHandler);
 
-        void ListenTradesEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+        void ListenTradesEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<TradesResponse> messageHandler);
 
-        void ListenOrderBookEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler, string precision = "PRECISION");
+        void ListenOrderBookEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<OrderBookResponse> messageHandler, string precision = "PRECISION");
 
-        void ListenTickerEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+        void ListenTickerEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<TickerResponse> messageHandler);
 
-        void ListenCandleEndpoint(string quoteSymbol, string baseSymbol, Timeframe timeframe, ApiClientAbstract.MessageHandler<dynamic> messageHandler);
-
-        void ListenPingPongEndpoint(ApiClientAbstract.MessageHandler<dynamic> messageHandler);
+        void ListenCandleEndpoint(string quoteSymbol, string baseSymbol, Timeframe timeframe, ApiClientAbstract.MessageHandler<CandleResponse> messageHandler);
 
         void UnsubscribeFromEndpoint(WebSocketType webSocketType);
         #endregion

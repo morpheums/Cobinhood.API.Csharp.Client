@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Cobinhood.API.Csharp.Client.Models.WebSocket;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,7 +18,7 @@ namespace Cobinhood.API.Csharp.Client.Test
         private static CobinhoodClient cobinhoodClient = new CobinhoodClient(apiClient);
 
         // Orders Websocket
-        private void OrderMessageHandler(dynamic messageData)
+        private void OrderMessageHandler(OrderResponse messageData)
         {
             var data = messageData;
         }
@@ -26,11 +27,11 @@ namespace Cobinhood.API.Csharp.Client.Test
         public void TestOrderWebsocket()
         {
             cobinhoodClient.ListenOrderEndpoint(OrderMessageHandler);
-            Thread.Sleep(50000);
+            Thread.Sleep(500000);
         }
 
         // Trades Websocket
-        private void TradeMessageHandler(dynamic messageData)
+        private void TradeMessageHandler(TradesResponse messageData)
         {
             var data = messageData;
         }
@@ -43,7 +44,7 @@ namespace Cobinhood.API.Csharp.Client.Test
         }
 
         // OrderBook Websocket
-        private void OrderBookMessageHandler(dynamic messageData)
+        private void OrderBookMessageHandler(OrderBookResponse messageData)
         {
             var data = messageData;
         }
@@ -56,7 +57,7 @@ namespace Cobinhood.API.Csharp.Client.Test
         }
 
         // Ticker Websocket
-        private void TickerMessageHandler(dynamic messageData)
+        private void TickerMessageHandler(TickerResponse messageData)
         {
             var data = messageData;
         }
@@ -69,7 +70,7 @@ namespace Cobinhood.API.Csharp.Client.Test
         }
 
         // Candle Websocket
-        private void CandleMessageHandler(dynamic messageData)
+        private void CandleMessageHandler(CandleResponse messageData)
         {
             var data = messageData;
         }
@@ -78,19 +79,6 @@ namespace Cobinhood.API.Csharp.Client.Test
         public void TestCandleWebsocket()
         {
             cobinhoodClient.ListenCandleEndpoint("ETH", "BTC", Models.Enums.Timeframe.TIMEFRAME_15_MINUTES, CandleMessageHandler);
-            Thread.Sleep(50000);
-        }
-
-        // PingPong Websocket
-        private void PingPongMessageHandler(dynamic messageData)
-        {
-            var data = messageData;
-        }
-
-        [TestMethod]
-        public void TestPingPongWebsocket()
-        {
-            cobinhoodClient.ListenPingPongEndpoint(PingPongMessageHandler);
             Thread.Sleep(50000);
         }
     }

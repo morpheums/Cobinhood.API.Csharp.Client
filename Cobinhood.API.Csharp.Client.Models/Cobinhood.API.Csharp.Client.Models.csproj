@@ -81,8 +81,12 @@
     <Compile Include="Wallet\Withdrawal.cs" />
     <Compile Include="Wallet\WithdrawalAddressesInfo.cs" />
     <Compile Include="Wallet\WithdrawalInfo.cs" />
+    <Compile Include="WebSocket\CandleResponse.cs" />
+    <Compile Include="WebSocket\OrderBookResponse.cs" />
+    <Compile Include="WebSocket\OrderResponse.cs" />
+    <Compile Include="WebSocket\TickerResponse.cs" />
+    <Compile Include="WebSocket\TradesResponse.cs" />
     <Compile Include="WebSocket\WebSocketRequest.cs" />
-    <Compile Include="WebSocket\WebSocketResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
