@@ -8,9 +8,16 @@ namespace Cobinhood.API.Csharp.Client.Models.WebSocket
 {
     public class TickerResponse
     {
+        public bool Success { get; set; }
         public string ChannelId { get; set; }
+        public string Event { get; set; }
+        public string Type { get; set; }
+        public string TradingPairId { get; set; }
+
         public TickerResponseResult Snapshot { get; set; }
         public TickerResponseResult Update { get; set; }
+
+        public ErrorResponse Error { get; set; }
 
         public class TickerResponseResult
         {

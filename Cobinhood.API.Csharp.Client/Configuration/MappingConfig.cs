@@ -210,15 +210,15 @@ namespace Cobinhood.API.Csharp.Client.Configuration
                 {
                     var result = new List<CandleResponseResult>();
 
-                        result.Add(new CandleResponseResult()
-                        {
-                            Time = source[0].ToString(),
-                            Open = source[1].ToString(),
-                            Close = source[2].ToString(),
-                            High = source[3].ToString(),
-                            Low = source[4].ToString(),
-                            Volume = source[5].ToString(),
-                        });
+                    result.Add(new CandleResponseResult()
+                    {
+                        Time = source[0].ToString(),
+                        Open = source[1].ToString(),
+                        Close = source[2].ToString(),
+                        High = source[3].ToString(),
+                        Low = source[4].ToString(),
+                        Volume = source[5].ToString(),
+                    });
 
                     return result;
                 }
@@ -253,6 +253,37 @@ namespace Cobinhood.API.Csharp.Client.Configuration
                 return null;
             }
         }
+
+        private static ErrorResponse ErrorResponseResolver(JToken source)
+        {
+            if (source != null && source["event"] != null && source["event"].ToString().ToLower() == "error")
+            {
+                var result = new ErrorResponse()
+                {
+                    Event = source["event"].ToString(),
+                    Code = source["code"].ToString(),
+                    Message = source["message"].ToString()
+                };
+
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private static bool SuccessResolver(JToken source)
+        {
+            if (source == null)
+            {
+                return true;
+            }
+            else
+            {
+                return source.ToString().ToLower() != "error";
+            }
+        }
         #endregion
 
         public static void Initialize()
@@ -266,30 +297,63 @@ namespace Cobinhood.API.Csharp.Client.Configuration
                     .ForMember(o => o.Result, cfg => cfg.ResolveUsing(jo => OrderBookResolver(jo["result"]["orderbook"])));
 
                 configuration.CreateMap<JToken, OrderResponse>()
+                     .ForMember(o => o.Success, cfg => { cfg.ResolveUsing(jo => SuccessResolver(jo["event"])); })
                      .ForMember(o => o.ChannelId, cfg => { cfg.MapFrom(jo => jo["channel_id"]); })
+                     .ForMember(o => o.Type, cfg => { cfg.MapFrom(jo => jo["type"]); })
+                     .ForMember(o => o.Event, cfg => { cfg.MapFrom(jo => jo["event"]); })
                      .ForMember(o => o.Snapshot, cfg => { cfg.ResolveUsing(jo => OrderResponseResolver(jo["snapshot"])); })
-                     .ForMember(o => o.Update, cfg => cfg.ResolveUsing(jo => OrderResponseResolver(jo["update"])));
+                     .ForMember(o => o.Update, cfg => cfg.ResolveUsing(jo => OrderResponseResolver(jo["update"])))
+                     .ForMember(o => o.Error, cfg => cfg.ResolveUsing(jo => ErrorResponseResolver(jo)));
 
                 configuration.CreateMap<JToken, OrderBookResponse>()
+                     .ForMember(o => o.Success, cfg => { cfg.ResolveUsing(jo => SuccessResolver(jo["event"])); })
                      .ForMember(o => o.ChannelId, cfg => { cfg.MapFrom(jo => jo["channel_id"]); })
+                     .ForMember(o => o.Type, cfg => { cfg.MapFrom(jo => jo["type"]); })
+                     .ForMember(o => o.Event, cfg => { cfg.MapFrom(jo => jo["event"]); })
+                     .ForMember(o => o.TradingPairId, cfg => { cfg.MapFrom(jo => jo["trading_pair_id"]); })
+                     .ForMember(o => o.Precision, cfg => { cfg.MapFrom(jo => jo["precision"]); })
                      .ForMember(o => o.Snapshot, cfg => { cfg.ResolveUsing(jo => OrderBookResponseResolver(jo["snapshot"])); })
-                     .ForMember(o => o.Update, cfg => cfg.ResolveUsing(jo => OrderBookResponseResolver(jo["update"])));
+                     .ForMember(o => o.Update, cfg => cfg.ResolveUsing(jo => OrderBookResponseResolver(jo["update"])))
+                     .ForMember(o => o.Error, cfg => cfg.ResolveUsing(jo => ErrorResponseResolver(jo)));
 
                 configuration.CreateMap<JToken, TradesResponse>()
+                    .ForMember(o => o.Success, cfg => { cfg.ResolveUsing(jo => SuccessResolver(jo["event"])); })
                     .ForMember(o => o.ChannelId, cfg => { cfg.MapFrom(jo => jo["channel_id"]); })
+                    .ForMember(o => o.Type, cfg => { cfg.MapFrom(jo => jo["type"]); })
+                    .ForMember(o => o.Event, cfg => { cfg.MapFrom(jo => jo["event"]); })
+                    .ForMember(o => o.TradingPairId, cfg => { cfg.MapFrom(jo => jo["trading_pair_id"]); })
                     .ForMember(o => o.Snapshot, cfg => { cfg.ResolveUsing(jo => TradesResponseResolver((JArray)jo["snapshot"])); })
-                    .ForMember(o => o.Update, cfg => cfg.ResolveUsing(jo => TradesResponseResolver((JArray)jo["update"])));
+                    .ForMember(o => o.Update, cfg => cfg.ResolveUsing(jo => TradesResponseResolver((JArray)jo["update"])))
+                    .ForMember(o => o.Error, cfg => cfg.ResolveUsing(jo => ErrorResponseResolver(jo)));
 
                 configuration.CreateMap<JToken, TickerResponse>()
-                     .ForMember(o => o.ChannelId, cfg => { cfg.MapFrom(jo => jo["channel_id"]); })
-                     .ForMember(o => o.Snapshot, cfg => { cfg.ResolveUsing(jo => TickerResponseResolver(jo["snapshot"])); })
-                     .ForMember(o => o.Update, cfg => cfg.ResolveUsing(jo => TickerResponseResolver(jo["update"])));
+                    .ForMember(o => o.Success, cfg => { cfg.ResolveUsing(jo => SuccessResolver(jo["event"])); })
+                    .ForMember(o => o.ChannelId, cfg => { cfg.MapFrom(jo => jo["channel_id"]); })
+                    .ForMember(o => o.Type, cfg => { cfg.MapFrom(jo => jo["type"]); })
+                    .ForMember(o => o.Event, cfg => { cfg.MapFrom(jo => jo["event"]); })
+                    .ForMember(o => o.TradingPairId, cfg => { cfg.MapFrom(jo => jo["trading_pair_id"]); })
+                    .ForMember(o => o.Snapshot, cfg => { cfg.ResolveUsing(jo => TickerResponseResolver(jo["snapshot"])); })
+                    .ForMember(o => o.Update, cfg => cfg.ResolveUsing(jo => TickerResponseResolver(jo["update"])))
+                    .ForMember(o => o.Error, cfg => cfg.ResolveUsing(jo => ErrorResponseResolver(jo)));
 
                 configuration.CreateMap<JToken, CandleResponse>()
+                    .ForMember(o => o.Success, cfg => { cfg.ResolveUsing(jo => SuccessResolver(jo["event"])); })
                     .ForMember(o => o.ChannelId, cfg => { cfg.MapFrom(jo => jo["channel_id"]); })
+                    .ForMember(o => o.Type, cfg => { cfg.MapFrom(jo => jo["type"]); })
+                    .ForMember(o => o.Event, cfg => { cfg.MapFrom(jo => jo["event"]); })
+                    .ForMember(o => o.TradingPairId, cfg => { cfg.MapFrom(jo => jo["trading_pair_id"]); })
+                    .ForMember(o => o.Timeframe, cfg => { cfg.MapFrom(jo => jo["timeframe"]); })
                     .ForMember(o => o.Snapshot, cfg => { cfg.ResolveUsing(jo => CandleResponseResolver(jo["snapshot"])); })
-                    .ForMember(o => o.Update, cfg => cfg.ResolveUsing(jo => CandleResponseResolver(jo["update"])));
+                    .ForMember(o => o.Update, cfg => cfg.ResolveUsing(jo => CandleResponseResolver(jo["update"])))
+                    .ForMember(o => o.Error, cfg => cfg.ResolveUsing(jo => ErrorResponseResolver(jo)));
+
+                configuration.CreateMap<JToken, UnsubscribeResponse>()
+                    .ForMember(o => o.Success, cfg => { cfg.ResolveUsing(jo => SuccessResolver(jo["event"])); })
+                    .ForMember(o => o.ChannelId, cfg => { cfg.MapFrom(jo => jo["channel_id"]); })
+                    .ForMember(o => o.Event, cfg => { cfg.MapFrom(jo => jo["event"]); })
+                    .ForMember(o => o.Error, cfg => cfg.ResolveUsing(jo => ErrorResponseResolver(jo)));
             });
         }
     }
 }
+

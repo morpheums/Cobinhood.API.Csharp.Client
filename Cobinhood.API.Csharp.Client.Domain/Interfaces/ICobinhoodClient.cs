@@ -224,17 +224,52 @@ namespace Cobinhood.API.Csharp.Client.Domain.Interfaces
         #endregion
 
         #region Web Socket Client
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="messageHandler"></param>
         void ListenOrderEndpoint(ApiClientAbstract.MessageHandler<OrderResponse> messageHandler);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="quoteSymbol"></param>
+        /// <param name="baseSymbol"></param>
+        /// <param name="messageHandler"></param>
         void ListenTradesEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<TradesResponse> messageHandler);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="quoteSymbol"></param>
+        /// <param name="baseSymbol"></param>
+        /// <param name="messageHandler"></param>
+        /// <param name="precision"></param>
         void ListenOrderBookEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<OrderBookResponse> messageHandler, string precision = "PRECISION");
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="quoteSymbol"></param>
+        /// <param name="baseSymbol"></param>
+        /// <param name="messageHandler"></param>
         void ListenTickerEndpoint(string quoteSymbol, string baseSymbol, ApiClientAbstract.MessageHandler<TickerResponse> messageHandler);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="quoteSymbol"></param>
+        /// <param name="baseSymbol"></param>
+        /// <param name="timeframe"></param>
+        /// <param name="messageHandler"></param>
         void ListenCandleEndpoint(string quoteSymbol, string baseSymbol, Timeframe timeframe, ApiClientAbstract.MessageHandler<CandleResponse> messageHandler);
 
-        void UnsubscribeFromEndpoint(WebSocketType webSocketType);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <param name="messageHandler"></param>
+        void UnsubscribeFromEndpoint(string channelId, ApiClientAbstract.MessageHandler<UnsubscribeResponse> messageHandler);
         #endregion
 
     }

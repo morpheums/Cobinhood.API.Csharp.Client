@@ -81,5 +81,15 @@ namespace Cobinhood.API.Csharp.Client.Test
             cobinhoodClient.ListenCandleEndpoint("ETH", "BTC", Models.Enums.Timeframe.TIMEFRAME_15_MINUTES, CandleMessageHandler);
             Thread.Sleep(50000);
         }
+
+        private void UnsubscribeMessageHandler(UnsubscribeResponse messageData) {
+            var data = messageData;
+        }
+
+        [TestMethod]
+        public void Unsubscribe() {
+            cobinhoodClient.UnsubscribeFromEndpoint("candle.ETH-BTC.15m", UnsubscribeMessageHandler);
+            Thread.Sleep(50000);
+        }
     }
 }

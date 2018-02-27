@@ -526,14 +526,16 @@ namespace Cobinhood.API.Csharp.Client
             _apiClient.SuscribeToWebSocket(messageHandler, requestData);
         }
 
-        public void UnsubscribeFromEndpoint(WebSocketType webSocketType)
+        /// <see cref="ICobinhoodClient.UnsubscribeFromEndpoint(string, ApiClientAbstract.MessageHandler{UnsubscribeResponse})"/>
+        public void UnsubscribeFromEndpoint(string channelId, ApiClientAbstract.MessageHandler<UnsubscribeResponse> messageHandler)
         {
             var requestData = new WebSocketRequest()
             {
-                ChannelId = webSocketType.GetDescription()
+                Action = "unsubscribe",
+                ChannelId = channelId
             };
 
-            _apiClient.UnsuscribeFromWebSocket(requestData);
+            _apiClient.SuscribeToWebSocket(messageHandler, requestData);
         }
         #endregion
     }
