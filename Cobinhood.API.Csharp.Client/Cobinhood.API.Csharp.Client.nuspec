@@ -1,22 +1,24 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Binance.API.Csharp.Client</id>
-    <version>1.4.0</version>
-    <title>Binance.API.Csharp.Client</title>
+    <id>Cobinhood.API.Csharp.Client</id>
+    <version>1.0.0</version>
+    <title>Cobinhood.API.Csharp.Client</title>
     <authors>Jose Mejia</authors>
     <owners>Jose Mejia</owners>
-    <projectUrl>https://github.com/morpheums/Binance.API.Csharp.Helper</projectUrl>
-    <iconUrl>https://github.com/morpheums/Binance.API.Csharp.Client/blob/master/Binance.API.Csharp.Client/BinanceLogo.png?raw=true</iconUrl>
+    <projectUrl>https://github.com/morpheums/Cobinhood.API.Csharp.Client</projectUrl>
+    <iconUrl>https://github.com/morpheums/Cobinhood.API.Csharp.Client/blob/master/Cobinhood.API.Csharp.Client/CobinhoodLogo.png?raw=true"</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>C#.NET client for Binance Exchange API.</description>
-    <releaseNotes>Fixing issue calling GetPriceChange24H method for a single ticker. Methods now return original error code and messages.
+    <description>C#.NET client for Cobinhood Exchange API.</description>
+    <releaseNotes>
     </releaseNotes>
     <copyright>Copyright 2017</copyright>
-    <tags>Criptocurrency Binance API dotnet csharp wrapper</tags>
+    <tags>Criptocurrency Cobinhood API dotnet csharp wrapper</tags>
     <dependencies>
-      <dependency id="Newtonsoft.Json" version="10.0.3" />
-      <dependency id="WebSocketSharp-NonPreRelease" version="1.0.0" />
+      <dependency id="Newtonsoft.Json" version="11.0.1" />
+      <dependency id="AutoMapper" version="6.2.2" />
+      <dependency id="NLog" version="4.4.12" />
+      <dependency id="websocket-sharp-customheaders" version="1.0.2.31869" />
     </dependencies>
   </metadata>
 </package>
