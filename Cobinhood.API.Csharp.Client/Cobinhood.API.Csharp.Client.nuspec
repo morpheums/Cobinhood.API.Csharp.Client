@@ -12,7 +12,7 @@
     <description>C#.NET client for Cobinhood Exchange API.</description>
     <releaseNotes>
     </releaseNotes>
-    <copyright>Copyright 2017</copyright>
+    <copyright>Copyright 2018</copyright>
     <tags>Criptocurrency Cobinhood API dotnet csharp wrapper</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="11.0.1" />

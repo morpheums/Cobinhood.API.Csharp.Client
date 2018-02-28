@@ -9,6 +9,8 @@
 
 ### C#.NET client for Cobinhood Exchange API.
 [![GitHub last commit](https://img.shields.io/github/last-commit/morpheums/Cobinhood.API.Csharp.Client.svg?style=plastic)]()
+[![NuGet](https://img.shields.io/nuget/v/Cobinhood.API.Csharp.Client.svg?style=plastic)](https://www.nuget.org/packages/Cobinhood.API.Csharp.Client)
+[![NuGet](https://img.shields.io/nuget/dt/Cobinhood.API.Csharp.Client.svg?style=plastic)](https://www.nuget.org/packages/Cobinhood.API.Csharp.Client)
 
 ## Features
 - **Very easy** to understand and get started.
