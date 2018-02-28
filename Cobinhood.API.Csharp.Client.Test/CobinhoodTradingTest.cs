@@ -77,8 +77,8 @@ namespace Cobinhood.API.Csharp.Client.Test
         [TestMethod]
         public void TestGetOrderHistory()
         {
-            var result = cobinhoodClient.GetOrderHistory("ETH", "BTC").Result;
-            Assert.AreEqual(result.Success, true);
+            var orderHistory = cobinhoodClient.GetOrderHistory("ETH", "BTC").Result;
+            Assert.AreEqual(orderHistory.Success, true);
         }
 
         [TestMethod]
@@ -91,8 +91,8 @@ namespace Cobinhood.API.Csharp.Client.Test
         [TestMethod]
         public void TestGetTradeHistory()
         {
-            var result = cobinhoodClient.GetTradeHistory("ETH", "BTC").Result;
-            Assert.AreEqual(result.Success, true);
+            var tradeHistory = cobinhoodClient.GetTradeHistory("ETH", "BTC").Result;
+            Assert.AreEqual(tradeHistory.Success, true);
         }
     }
 }

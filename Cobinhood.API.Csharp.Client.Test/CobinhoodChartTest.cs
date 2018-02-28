@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Cobinhood.API.Csharp.Client.Models.Enums;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
 
 namespace Cobinhood.API.Csharp.Client.Test
@@ -13,7 +14,7 @@ namespace Cobinhood.API.Csharp.Client.Test
         [TestMethod]
         public void TestGetCandles()
         {
-            var candles = cobinhoodClient.GetCandles("ETH","BTC", Models.Enums.Timeframe.TIMEFRAME_15_MINUTES).Result;
+            var candles = cobinhoodClient.GetCandles("ETH","BTC", Timeframe.TIMEFRAME_15_MINUTES).Result;
             Assert.AreEqual(candles.Success, true);
         }
     }
